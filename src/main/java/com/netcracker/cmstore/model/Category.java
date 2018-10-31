@@ -1,13 +1,10 @@
 package com.netcracker.cmstore.model;
 
 public class Category {
-    public Category() {
 
-    }
-
-    public int categoryId;
-    public String title;
-    public String description;
+    private int categoryId;
+    private String title;
+    private String description;
 
     public int getCategoryId() {
         return categoryId;
