@@ -8,6 +8,6 @@
     <title>Insert title here</title>
 </head>
 <body>
-<jsp:forward page="/CategoryController?action=listCategory"/>
+<jsp:forward page="/ProductController?action=listProduct"/>
 </body>
 </html>

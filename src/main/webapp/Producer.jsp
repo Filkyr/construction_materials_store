@@ -18,6 +18,8 @@
 
 </head>
 <body>
+<%@ include file="templates/header.html"%>
+
 <div class="container">
     <form method="POST" action='ProducerController' name="frmAddProducer" role="form">
         <div class="form-group">

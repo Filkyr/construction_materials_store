@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `cm_store`.`customer` (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `phone_num` VARCHAR(45) NULL,
-  `adress` VARCHAR(135) NULL,
+  `address` VARCHAR(135) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -178,9 +178,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `cm_store`;
-INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `adress`) VALUES (1, 'Kiryl', 'Vasiliev', '+375774567389', NULL);
-INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `adress`) VALUES (2, 'Anton', 'Aezakmi', '+378956879987', NULL);
-INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `adress`) VALUES (3, 'Kostya', 'Soname', '+378985456478', NULL);
+INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `address`) VALUES (1, 'Kiryl', 'Vasiliev', '+375774567389', NULL);
+INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `address`) VALUES (2, 'Anton', 'Aezakmi', '+378956879987', NULL);
+INSERT INTO `cm_store`.`customer` (`id`, `first_name`, `last_name`, `phone_num`, `address`) VALUES (3, 'Kostya', 'Soname', '+378985456478', NULL);
 
 COMMIT;
 

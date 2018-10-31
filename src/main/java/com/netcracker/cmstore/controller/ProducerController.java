@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 import com.netcracker.cmstore.dao.ProducerDAO;
 import com.netcracker.cmstore.model.Producer;
-import com.netcracker.cmstore.model.Producer;
 
 @WebServlet(name = "ProducerController", urlPatterns = {"/ProducerController"})
 public class ProducerController extends HttpServlet {
