@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: filkyr
-  Date: 31.10.2018
-  Time: 23:08
+  Date: 01.11.2018
+  Time: 15:55
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -12,44 +12,39 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add or Edit product</title>
+    <title>Add or Edit customer</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="templates/header.html"%>
+<%@ include file="../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='ProductController' name="frmAddProduct" role="form">
+    <form method="POST" action='CustomerController' name="frmAddCustomer" role="form">
         <div class="form-group">
-            <label for="productId">
-                ID: <input class="form-control" type="number" id="productId" name="productId" readonly value=<c:out value="${product.productId}" /> />
+            <label for="id">
+                ID: <input class="form-control" type="number" id="id" name="id" readonly value=<c:out value="${customer.id}" /> />
             </label>
         </div>
         <div class="form-group">
-            <label for="title">
-                Title:<input class="form-control" type="text" id="title" name="title" value="<c:out value="${product.title}" />" />
+            <label for="firstName">
+                First name: <input class="form-control" type="text" id="firstName" name="firstName" value="<c:out value="${customer.firstName}" />" />
             </label>
         </div>
         <div class="form-group">
-            <label for="categoryId">
-                Category: <input class="form-control" type="number" id="categoryId" name="categoryId" value="<c:out value="${product.categoryId}" />" />
+            <label for="lastName">
+                Last name: <input class="form-control" type="text" id="lastName" name="lastName" value="<c:out value="${customer.lastName}" />" />
             </label>
         </div>
         <div class="form-group">
-            <label for="producerId">
-                Producer: <input class="form-control" type="number" id="producerId" name="producerId" value="<c:out value="${product.producerId}" />" />
+            <label for="phoneNum">
+                Phone num: <input class="form-control" type="text" id="phoneNum" name="phoneNum" value="<c:out value="${customer.phoneNum}" />" />
             </label>
         </div>
         <div class="form-group">
-            <label for="image">
-                Image: <input class="form-control" type="text" id="image" name="image" value="<c:out value="${product.image}" />" />
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="description">
-                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${product.description}" />" />
+            <label for="address">
+                Address: <input class="form-control" type="text" id="address" name="address" value="<c:out value="${customer.address}" />" />
             </label>
         </div>
         <input type="submit" value="Submit" class="btn btn-outline-success" />
@@ -62,3 +57,4 @@
 
 </body>
 </html>
+

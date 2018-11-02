@@ -15,8 +15,8 @@ import java.io.IOException;
 public class CustomerController extends ExceptionHandlingHttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static String insert_or_edit = "/Customer.jsp";
-    private static String list_customer = "/ListCustomer.jsp";
+    private static String insert_or_edit = "WEB-INF/Customer.jsp";
+    private static String list_customer = "WEB-INF/ListCustomer.jsp";
     private CustomerDAO customerDAOImpl;
 
     public CustomerController() {

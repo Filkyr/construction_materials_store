@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: filkyr
   Date: 31.10.2018
-  Time: 14:31
+  Time: 23:08
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -12,34 +12,44 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add or Edit producer</title>
+    <title>Add or Edit product</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="templates/header.html"%>
+<%@ include file="../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='ProducerController' name="frmAddProducer" role="form">
+    <form method="POST" action='ProductController' name="frmAddProduct" role="form">
+        <div class="form-group">
+            <label for="productId">
+                ID: <input class="form-control" type="number" id="productId" name="productId" readonly value=<c:out value="${product.productId}" /> />
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="title">
+                Title:<input class="form-control" type="text" id="title" name="title" value="<c:out value="${product.title}" />" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="categoryId">
+                Category: <input class="form-control" type="number" id="categoryId" name="categoryId" value="<c:out value="${product.categoryId}" />" />
+            </label>
+        </div>
         <div class="form-group">
             <label for="producerId">
-                ID: <input class="form-control" type="number" id="producerId" name="producerId" readonly value=<c:out value="${producer.producerId}" /> />
+                Producer: <input class="form-control" type="number" id="producerId" name="producerId" value="<c:out value="${product.producerId}" />" />
             </label>
         </div>
         <div class="form-group">
-            <label for="brand_name">
-                Brand name:<input class="form-control" type="text" id="brand_name" name="brand_name" value="<c:out value="${producer.brand_name}" />" />
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="description">
-                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${producer.description}" />" />
+            <label for="image">
+                Image: <input class="form-control" type="text" id="image" name="image" value="<c:out value="${product.image}" />" />
             </label>
         </div>
         <div class="form-group">
             <label for="description">
-                Logo: <input class="form-control" type="text" id="logo" name="logo" value="<c:out value="${producer.logo}" />" />
+                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${product.description}" />" />
             </label>
         </div>
         <input type="submit" value="Submit" class="btn btn-outline-success" />

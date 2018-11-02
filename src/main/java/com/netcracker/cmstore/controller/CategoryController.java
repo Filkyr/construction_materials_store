@@ -15,8 +15,8 @@ import java.io.IOException;
 public class CategoryController extends ExceptionHandlingHttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static String insert_or_edit = "/Category.jsp";
-    private static String list_category = "/ListCategory.jsp";
+    private static String insert_or_edit = "WEB-INF/Category.jsp";
+    private static String list_category = "WEB-INF/ListCategory.jsp";
     private CategoryDAO categoryDAOimpl;
 
     public CategoryController() {

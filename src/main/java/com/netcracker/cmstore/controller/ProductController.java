@@ -15,8 +15,8 @@ import java.io.IOException;
 public class ProductController extends ExceptionHandlingHttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static String insert_or_edit = "/Product.jsp";
-    private static String list_product = "/ListProduct.jsp";
+    private static String insert_or_edit = "WEB-INF/Product.jsp";
+    private static String list_product = "WEB-INF/ListProduct.jsp";
     private ProductDAO productDAOImpl;
 
     public ProductController() {
@@ -71,7 +71,7 @@ public class ProductController extends ExceptionHandlingHttpServlet {
             productDAOImpl.updateProduct(product);
         }
 
-        response.sendRedirect(request.getContextPath() + "/ProductController?action=listProduct");
+        response.sendRedirect(request.getContextPath() + "ProductController?action=listProduct");
 
     }
 

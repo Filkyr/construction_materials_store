@@ -1,13 +1,11 @@
 package com.netcracker.cmstore.model;
 
-import java.util.List;
-
 public class Order {
 
     private int id;
-    private String customerId;
+    private int customerId;
     private String date;
-    private List<Product> products;
+    private String productId;
 
     public int getId() {
         return id;
@@ -17,11 +15,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -31,5 +29,13 @@ public class Order {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

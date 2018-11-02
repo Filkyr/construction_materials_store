@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Insert title here</title>
+    <title>CP Store</title>
 </head>
 <body>
 <jsp:forward page="/ProductController?action=listProduct"/>

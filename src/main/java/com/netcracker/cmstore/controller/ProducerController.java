@@ -15,8 +15,8 @@ import java.io.IOException;
 public class ProducerController extends ExceptionHandlingHttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static String insert_or_edit = "/Producer.jsp";
-    private static String list_producer = "/ListProducer.jsp";
+    private static String insert_or_edit = "WEB-INF/Producer.jsp";
+    private static String list_producer = "WEB-INF/ListProducer.jsp";
     private ProducerDAO producerDAOImpl;
 
     public ProducerController() {

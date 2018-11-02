@@ -23,7 +23,7 @@
 
 </head>
 <body>
-<%@ include file="templates/header.html"%>
+<%@ include file="../templates/header.html"%>
 <div class="wrap">
     <section>
         <div class="container">

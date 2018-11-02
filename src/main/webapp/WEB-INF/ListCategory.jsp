@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: filkyr
-  Date: 31.10.2018
-  Time: 23:08
+  Date: 30.10.2018
+  Time: 20:59
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,25 +16,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <title>Products</title>
+    <title>Categories</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="templates/header.html" %>
-
-<%--<c:if test="${not empty warning}">--%>
-    <%--<div class="alert alert-danger alert-dismissible">--%>
-    <%--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--%>
-    <%--<strong>Error!</strong> Insert/Edit failed. Please, enter valid values.</div>--%>
-<%--</c:if>--%>
-
+<%@ include file="../templates/header.html"%>
 <div class="wrap">
     <section>
         <div class="container">
-            <table class="table table-striped" style="table-layout: fixed">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>
@@ -44,51 +37,33 @@
                         Title
                     </th>
                     <th>
-                        Category
-                    </th>
-                    <th>
-                        Producer
-                    </th>
-                    <th>
-                        Image
-                    </th>
-                    <th>
                         Description
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${products}" var="product">
+                <c:forEach items="${categories}" var="category">
                     <tr>
-                        <td class="overflowHidden">
-                            <c:out value="${product.productId}"/>
+                        <td>
+                            <c:out value="${category.categoryId}"/>
                         </td>
-                        <td class="overflowHidden">
-                            <c:out value="${product.title}"/>
+                        <td>
+                            <c:out value="${category.title}"/>
                         </td>
-                        <td class="overflowHidden">
-                            <c:out value="${product.categoryId}"/>
+                        <td>
+                            <c:out value="${category.description}"/>
                         </td>
-                        <td class="overflowHidden">
-                            <c:out value="${product.producerId}"/>
+                        <td>
+                            <a href="CategoryController?action=edit&categoryId=<c:out value="${category.categoryId}"/>">Update</a>
                         </td>
-                        <td class="overflowHidden">
-                            <img src="${product.image}" class="img-thumbnail" alt="Product logo">
-                        </td>
-                        <td class="overflowHidden">
-                            <c:out value="${product.description}"/>
-                        </td>
-                        <td td class="overflowHidden">
-                            <a href="ProductController?action=edit&productId=<c:out value="${product.productId}"/>">Update</a>
-                        </td>
-                        <td td class="overflowHidden">
-                            <a href="ProductController?action=delete&productId=<c:out value="${product.productId}"/>">Delete</a>
+                        <td>
+                            <a href="CategoryController?action=delete&categoryId=<c:out value="${category.categoryId}"/>">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="ProductController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="CategoryController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>

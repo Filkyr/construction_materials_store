@@ -1,13 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: filkyr
-  Date: 01.11.2018
-  Time: 15:55
+  Date: 02.11.2018
+  Time: 15:22
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 
 <html lang="en">
@@ -16,14 +15,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <title>Customers</title>
+    <title>Orders</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="templates/header.html" %>
+<%@ include file="../templates/header.html" %>
 
 <%--<c:if test="${not empty warning}">--%>
 <%--<div class="alert alert-danger alert-dismissible">--%>
@@ -38,51 +37,43 @@
                 <thead>
                 <tr>
                     <th>
-                        ID
+                        Order ID
                     </th>
                     <th>
-                        First name
+                        Customer ID
                     </th>
                     <th>
-                        Last name
+                        Date
                     </th>
                     <th>
-                        Phone num
-                    </th>
-                    <th>
-                        Address
+                        Product
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${customers}" var="customer">
+                <c:forEach items="${orders}" var="order">
                     <tr>
                         <td class="overflowHidden">
-                            <c:out value="${customer.id}"/>
+                            <c:out value="${order.id}"/>
                         </td>
                         <td class="overflowHidden">
-                            <c:out value="${customer.firstName}"/>
+                            <c:out value="${order.customerId}"/>
                         </td>
                         <td class="overflowHidden">
-                            <c:out value="${customer.lastName}"/>
+                            <c:out value="${order.date}"/>
                         </td>
                         <td class="overflowHidden">
-                            <c:out value="${customer.phoneNum}"/>
-                        </td>
-                        <td class="overflowHidden">
-                            <c:out value="${customer.address}"/>
+                            <c:out value="${order.productId}"/>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="CustomerController?action=edit&id=<c:out value="${customer.id}"/>">Update</a>
-                        </td>
-                        <td td class="overflowHidden">
-                            <a href="CustomerController?action=delete&id=<c:out value="${customer.id}"/>">Delete</a>
+                            <a href="OrderController?action=delete&id=<c:out value="${order.id}"/>&productId=<c:out value="${order.productId}"/>">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="CustomerController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="OrderController?action=insert" class="btn btn-outline-primary" role="button">Add new order</a>
+            <a href="OrderProductController?action=insert" class="btn btn-outline-primary" role="button">Add product to order</a>
 
         </div>
     </section>
@@ -100,4 +91,3 @@
 
 </body>
 </html>
-

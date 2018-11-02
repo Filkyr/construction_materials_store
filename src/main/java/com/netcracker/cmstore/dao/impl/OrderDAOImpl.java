@@ -11,11 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAOImpl implements OrderDAO {
-    private static final String INSERT_ORDER = "INSERT INTO order (customer_id, date) VALUES (?, ?)";
-    private static final String SELECT_ORDER = "SELECT * FROM order WHERE order.id =?";
-    private static final String SELECT_ORDERS = "SELECT * FROM order";
-    private static final String UPDATE_ORDER = "UPDATE order SET customer_id=?, date=? WHERE order.id=?";
-    private static final String DELETE_ORDER = "DELETE FROM order WHERE order.id=?";
+    private static final String INSERT_ORDER = "INSERT INTO `order` (customer_id, date) VALUES (?, ?)";
+    private static final String SELECT_ORDER = "SELECT `order`.id, `order`.customer_id, `order`.date, order_product.product_id  " +
+            "FROM `order` " +
+            "INNER JOIN order_product on `order`.id = order_product.order_id " +
+            "WHERE `order`.id =?";
+    private static final String SELECT_ORDERS = "SELECT `order`.id, `order`.customer_id, `order`.date, op.product_id " +
+            "FROM `order` " +
+            "LEFT JOIN order_product AS op " +
+            "on `order`.id = COALESCE(op.order_id, '') " +
+            "ORDER BY `order`.id, op.product_id";
+    private static final String UPDATE_ORDER = "UPDATE `order` SET customer_id=?, date=? WHERE `order`.id=?";
+    private static final String DELETE_ORDER = "DELETE FROM `order` WHERE `order`.id=?";
+
+    private static final String MISSING_PRODUCTS = "(products in the order is missing)";
 
     private final DataSource dataSource;
 
@@ -26,11 +35,9 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public void addOrder(Order order) {
         try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER)) {
-
-                statement.setString(1, order.getCustomerId());
+            try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, order.getCustomerId());
                 statement.setString(2, order.getDate());
-
                 statement.executeUpdate();
             }
 
@@ -56,7 +63,7 @@ public class OrderDAOImpl implements OrderDAO {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER)) {
 
-                statement.setString(1, order.getCustomerId());
+                statement.setInt(1, order.getCustomerId());
                 statement.setString(2, order.getDate());
                 statement.setInt(3, order.getId());
 
@@ -76,8 +83,14 @@ public class OrderDAOImpl implements OrderDAO {
                 while (res.next()) {
                     Order order = new Order();
                     order.setId(res.getInt("id"));
-                    order.setCustomerId(res.getString("customer_id"));
+                    order.setCustomerId(res.getInt("customer_id"));
                     order.setDate(res.getString("date"));
+                    int productId = res.getInt("product_id");
+                    if (productId > 0) {
+                        order.setProductId(String.valueOf(productId));
+                    } else {
+                        order.setProductId(MISSING_PRODUCTS);
+                    }
                     orders.add(order);
                 }
             }
@@ -96,8 +109,9 @@ public class OrderDAOImpl implements OrderDAO {
                 try (ResultSet res = statement.executeQuery()) {
                     if (res.next()) {
                         order.setId(res.getInt("id"));
-                        order.setCustomerId(res.getString("first_name"));
+                        order.setCustomerId(res.getInt("customer_id"));
                         order.setDate(res.getString("date"));
+                        order.setProductId(res.getString("product_id"));
                     }
                 }
             }
