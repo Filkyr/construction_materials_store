@@ -27,7 +27,7 @@ public class CustomerController extends ExceptionHandlingHttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = "";
         String action = request.getParameter("action");
-        if (action.equalsIgnoreCase("delete")) {
+        if ("delete".equalsIgnoreCase(action)) {
             int customerId = Integer.parseInt(request.getParameter("id"));
 
             customerDAOImpl.removeCustomer(customerId);
@@ -36,7 +36,7 @@ public class CustomerController extends ExceptionHandlingHttpServlet {
 
             request.setAttribute("customers", customerDAOImpl.getCustomers());
 
-        } else if (action.equalsIgnoreCase("edit")) {
+        } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int customerId = Integer.parseInt(request.getParameter("id"));
 
@@ -44,11 +44,11 @@ public class CustomerController extends ExceptionHandlingHttpServlet {
 
             request.setAttribute("customer", customer);
 
-        } else if (action.equalsIgnoreCase("listCustomer")) {
+        } else if ("listCustomer".equalsIgnoreCase(action)) {
             forward = list_customer;
             request.setAttribute("customers", customerDAOImpl.getCustomers());
 
-        } else if (action.equalsIgnoreCase("insert")) {
+        } else if ("insert".equalsIgnoreCase(action)) {
 
             forward = insert_or_edit;
 

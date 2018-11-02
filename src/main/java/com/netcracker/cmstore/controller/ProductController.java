@@ -27,7 +27,7 @@ public class ProductController extends ExceptionHandlingHttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = "";
         String action = request.getParameter("action");
-        if (action.equalsIgnoreCase("delete")) {
+        if ("delete".equalsIgnoreCase(action)) {
             int productId = Integer.parseInt(request.getParameter("productId"));
 
             productDAOImpl.removeProduct(productId);
@@ -35,17 +35,17 @@ public class ProductController extends ExceptionHandlingHttpServlet {
             forward = list_product;
             request.setAttribute("products", productDAOImpl.getProducts());
 
-        } else if (action.equalsIgnoreCase("edit")) {
+        } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int productId = Integer.parseInt(request.getParameter("productId"));
             Product product = productDAOImpl.getProductById(productId);
             request.setAttribute("product", product);
 
-        } else if (action.equalsIgnoreCase("listProduct")) {
+        } else if ("listProduct".equalsIgnoreCase(action)) {
             forward = list_product;
             request.setAttribute("products", productDAOImpl.getProducts());
 
-        } else if (action.equalsIgnoreCase("insert")) {
+        } else if ("insert".equalsIgnoreCase(action)) {
 
             forward = insert_or_edit;
 

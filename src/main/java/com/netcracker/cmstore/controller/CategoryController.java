@@ -27,7 +27,7 @@ public class CategoryController extends ExceptionHandlingHttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = "";
         String action = request.getParameter("action");
-        if (action.equalsIgnoreCase("delete")) {
+        if ("delete".equalsIgnoreCase(action)) {
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
             categoryDAOimpl.removeCategory(categoryId);
@@ -36,7 +36,7 @@ public class CategoryController extends ExceptionHandlingHttpServlet {
 
             request.setAttribute("categories", categoryDAOimpl.getCategories());
 
-        } else if (action.equalsIgnoreCase("edit")) {
+        } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
@@ -44,11 +44,11 @@ public class CategoryController extends ExceptionHandlingHttpServlet {
 
             request.setAttribute("category", category);
 
-        } else if (action.equalsIgnoreCase("listCategory")) {
+        } else if ("listCategory".equalsIgnoreCase(action)) {
             forward = list_category;
 
             request.setAttribute("categories", categoryDAOimpl.getCategories());
-        } else if (action.equalsIgnoreCase("insert")) {
+        } else if ("insert".equalsIgnoreCase(action)) {
 
             forward = insert_or_edit;
         }

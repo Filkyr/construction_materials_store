@@ -35,17 +35,17 @@ public class ProducerController extends ExceptionHandlingHttpServlet {
             forward = list_producer;
             request.setAttribute("producers", producerDAOImpl.getProducers());
 
-        } else if (action.equalsIgnoreCase("edit")) {
+        } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int producerId = Integer.parseInt(request.getParameter("producerId"));
             Producer producer = producerDAOImpl.getProducerById(producerId);
             request.setAttribute("producer", producer);
 
-        } else if (action.equalsIgnoreCase("listProducer")) {
+        } else if ("listProducer".equalsIgnoreCase(action)) {
             forward = list_producer;
             request.setAttribute("producers", producerDAOImpl.getProducers());
 
-        } else if (action.equalsIgnoreCase("insert")) {
+        } else if ("insert".equalsIgnoreCase(action)) {
 
             forward = insert_or_edit;
         }
