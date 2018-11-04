@@ -25,12 +25,6 @@
 <body>
 <%@ include file="../templates/header.html" %>
 
-<%--<c:if test="${not empty warning}">--%>
-<%--<div class="alert alert-danger alert-dismissible">--%>
-<%--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--%>
-<%--<strong>Error!</strong> Insert/Edit failed. Please, enter valid values.</div>--%>
-<%--</c:if>--%>
-
 <div class="wrap">
     <section>
         <div class="container">

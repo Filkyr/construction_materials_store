@@ -1,5 +1,5 @@
 # Construction Materials Store
-## v0.9
+## v1.0
 This web application implements an online construction materials store. 
 Supports CRUD operations on following tables: 
 * 'product' 

@@ -13,8 +13,7 @@ import java.sql.SQLException;
 public class OrderProductDAOImpl implements OrderProductDAO {
 
     private static final String INSERT_OrderProduct = "INSERT INTO order_product (order_product.order_id, order_product.product_id) VALUES (?, ?)";
-    private static final String SELECT_OrderProduct = "SELECT * FROM order_product WHERE order_product.order_id =? AND order_product.product_id=?";
-    private static final String UPDATE_OrderProduct = "UPDATE order_product SET order_product.product_id=? WHERE order_product.order_id=?";
+
     private static final String DELETE_OrderProduct = "DELETE FROM order_product WHERE order_product.order_id=? AND order_product.product_id=?";
 
     private final DataSource dataSource;

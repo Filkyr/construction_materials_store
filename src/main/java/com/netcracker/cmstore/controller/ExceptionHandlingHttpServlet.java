@@ -21,7 +21,7 @@ public class ExceptionHandlingHttpServlet extends HttpServlet {
         } catch (Exception ex) {
             logger.error("Exception while http request handling", ex);
             if (!response.isCommitted()) {
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);
             }
         }
     }
