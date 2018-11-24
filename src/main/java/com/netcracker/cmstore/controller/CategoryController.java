@@ -1,30 +1,36 @@
 package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.CategoryDAO;
-import com.netcracker.cmstore.dao.factory.DaoFactory;
 import com.netcracker.cmstore.model.Category;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "CategoryController", urlPatterns = {"/CategoryController"})
-public class CategoryController extends ExceptionHandlingHttpServlet {
+@RequestMapping(path = "/CategoryController")
+@Controller
+public class CategoryController {
 
     private static final long serialVersionUID = 1L;
     private static String insert_or_edit = "WEB-INF/Category.jsp";
     private static String list_category = "WEB-INF/ListCategory.jsp";
-    private CategoryDAO categoryDAOimpl;
 
-    public CategoryController() {
+    private final CategoryDAO categoryDAOimpl;
+
+    @Autowired
+    public CategoryController(CategoryDAO categoryDao) {
         super();
-        categoryDAOimpl = DaoFactory.getInstance().getCategoryDAO();
+        this.categoryDAOimpl = categoryDao;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.GET)
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = "";
         String action = request.getParameter("action");
         if ("delete".equalsIgnoreCase(action)) {
@@ -57,7 +63,8 @@ public class CategoryController extends ExceptionHandlingHttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Category category = new Category();
         category.setTitle(request.getParameter("title"));
         category.setDescription(request.getParameter("description"));

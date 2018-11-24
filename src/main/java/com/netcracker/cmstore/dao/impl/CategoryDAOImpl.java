@@ -3,12 +3,15 @@ package com.netcracker.cmstore.dao.impl;
 import com.netcracker.cmstore.dao.CategoryDAO;
 import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Category;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CategoryDAOImpl implements CategoryDAO {
     private static final String INSERT_CATEGORY = "INSERT INTO category (title, description) VALUES (?, ?)";
     private static final String SELECT_CATEGORY = "SELECT * FROM category WHERE category.id =?";
@@ -18,6 +21,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     private final DataSource dataSource;
 
+    @Autowired
     public CategoryDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }

@@ -3,15 +3,17 @@ package com.netcracker.cmstore.dao.impl;
 import com.netcracker.cmstore.dao.CustomerDAO;
 import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CustomerDAOImpl implements CustomerDAO {
-    private Connection connection;
-
     private static final String INSERT_CUSTOMER = "INSERT INTO customer (first_name, last_name, phone_num, address) VALUES (?, ?, ?, ?)";
     private static final String SELECT_CUSTOMER = "SELECT * FROM customer WHERE customer.id =?";
     private static final String SELECT_CUSTOMERS = "SELECT * FROM customer";
@@ -20,6 +22,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     private final DataSource dataSource;
 
+    @Autowired
     public CustomerDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }

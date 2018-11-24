@@ -3,11 +3,14 @@ package com.netcracker.cmstore.dao.impl;
 import com.netcracker.cmstore.dao.ProductDAO;
 import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 
+@Repository
 public class ProductDAOImpl implements ProductDAO {
 
     private static final String INSERT_PRODUCT = "INSERT INTO product (title, category_id, producer_id, image, description) VALUES (?, ?, ?, ?, ?)";
@@ -18,6 +21,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     private final DataSource dataSource;
 
+    @Autowired
     public ProductDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }

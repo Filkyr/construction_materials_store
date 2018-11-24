@@ -1,8 +1,11 @@
 package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.CustomerDAO;
-import com.netcracker.cmstore.dao.factory.DaoFactory;
 import com.netcracker.cmstore.model.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,20 +14,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "CustomerController", urlPatterns = {"/CustomerController"})
-public class CustomerController extends ExceptionHandlingHttpServlet {
+@RequestMapping(path = "/CustomerController")
+@Controller
+public class CustomerController {
 
     private static final long serialVersionUID = 1L;
     private static String insert_or_edit = "WEB-INF/Customer.jsp";
     private static String list_customer = "WEB-INF/ListCustomer.jsp";
-    private CustomerDAO customerDAOImpl;
+    private final CustomerDAO customerDAOImpl;
 
-    public CustomerController() {
+    @Autowired
+    public CustomerController(CustomerDAO customerDao) {
         super();
-        customerDAOImpl = DaoFactory.getInstance().getCustomerDAO();
+        this.customerDAOImpl = customerDao;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.GET)
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String forward = "";
         String action = request.getParameter("action");
         if ("delete".equalsIgnoreCase(action)) {
@@ -58,7 +64,8 @@ public class CustomerController extends ExceptionHandlingHttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Customer customer = new Customer();
         customer.setFirstName(request.getParameter("firstName"));
         customer.setLastName(request.getParameter("lastName"));

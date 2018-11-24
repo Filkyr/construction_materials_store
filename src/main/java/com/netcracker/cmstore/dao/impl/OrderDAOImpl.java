@@ -4,12 +4,15 @@ package com.netcracker.cmstore.dao.impl;
 import com.netcracker.cmstore.dao.OrderDAO;
 import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OrderDAOImpl implements OrderDAO {
     private static final String INSERT_ORDER = "INSERT INTO `order` (customer_id, date) VALUES (?, ?)";
     private static final String SELECT_ORDER = "SELECT `order`.id, `order`.customer_id, `order`.date, order_product.product_id  " +
@@ -28,6 +31,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     private final DataSource dataSource;
 
+    @Autowired
     public OrderDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
