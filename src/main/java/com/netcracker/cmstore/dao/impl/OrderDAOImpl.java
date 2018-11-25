@@ -32,11 +32,8 @@ public class OrderDAOImpl implements OrderDAO {
         order.setId(rs.getInt("id"));
         order.setCustomerId(rs.getInt("customer_id"));
         order.setDate(rs.getString("date"));
-        if (!rs.getString("product_id").isEmpty()) {
-            order.setProductId(rs.getString("product_id"));
-        } else {
-            order.setProductId(MISSING_PRODUCTS);
-        }
+        order.setProductId(rs.getString("product_id"));
+
         return order;
     };
 
