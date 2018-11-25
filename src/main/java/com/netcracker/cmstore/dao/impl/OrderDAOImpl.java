@@ -2,14 +2,12 @@ package com.netcracker.cmstore.dao.impl;
 
 
 import com.netcracker.cmstore.dao.OrderDAO;
-import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -29,100 +27,57 @@ public class OrderDAOImpl implements OrderDAO {
 
     private static final String MISSING_PRODUCTS = "(products in the order is missing)";
 
-    private final DataSource dataSource;
+    private static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, rowNum) -> {
+        Order order = new Order();
+        order.setId(rs.getInt("id"));
+        order.setCustomerId(rs.getInt("customer_id"));
+        order.setDate(rs.getString("date"));
+        if (!rs.getString("product_id").isEmpty()) {
+            order.setProductId(rs.getString("product_id"));
+        } else {
+            order.setProductId(MISSING_PRODUCTS);
+        }
+        return order;
+    };
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public OrderDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public OrderDAOImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void addOrder(Order order) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
-                statement.setInt(1, order.getCustomerId());
-                statement.setString(2, order.getDate());
-                statement.executeUpdate();
-            }
-
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        jdbcTemplate.update(INSERT_ORDER, statement -> {
+            statement.setInt(1, order.getCustomerId());
+            statement.setString(2, order.getDate());
+        });
     }
 
     @Override
     public void removeOrder(int orderId) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(DELETE_ORDER)) {
-                statement.setInt(1, orderId);
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        jdbcTemplate.update(DELETE_ORDER, statement -> statement.setInt(1, orderId));
     }
 
     @Override
     public void updateOrder(Order order) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER)) {
+        jdbcTemplate.update(UPDATE_ORDER, statement -> {
+            statement.setInt(1, order.getCustomerId());
+            statement.setString(2, order.getDate());
+            statement.setInt(3, order.getId());
+        });
 
-                statement.setInt(1, order.getCustomerId());
-                statement.setString(2, order.getDate());
-                statement.setInt(3, order.getId());
-
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
     }
 
     @Override
     public List<Order> getOrders() {
-        try (Connection connection = dataSource.getConnection()) {
-            List<Order> orders = new ArrayList<>();
-            try (Statement stmt = connection.createStatement();
-                 ResultSet res = stmt.executeQuery(SELECT_ORDERS)) {
-                while (res.next()) {
-                    Order order = new Order();
-                    order.setId(res.getInt("id"));
-                    order.setCustomerId(res.getInt("customer_id"));
-                    order.setDate(res.getString("date"));
-                    int productId = res.getInt("product_id");
-                    if (productId > 0) {
-                        order.setProductId(String.valueOf(productId));
-                    } else {
-                        order.setProductId(MISSING_PRODUCTS);
-                    }
-                    orders.add(order);
-                }
-            }
-            return orders;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return jdbcTemplate.query(SELECT_ORDERS, ORDER_ROW_MAPPER);
     }
 
     @Override
     public Order getOrderById(int orderId) {
-        try (Connection connection = dataSource.getConnection()) {
-            Order order = new Order();
-            try (PreparedStatement statement = connection.prepareStatement(SELECT_ORDER)) {
-                statement.setInt(1, orderId);
-                try (ResultSet res = statement.executeQuery()) {
-                    if (res.next()) {
-                        order.setId(res.getInt("id"));
-                        order.setCustomerId(res.getInt("customer_id"));
-                        order.setDate(res.getString("date"));
-                        order.setProductId(res.getString("product_id"));
-                    }
-                }
-            }
-            return order;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return jdbcTemplate.queryForObject(SELECT_ORDER, new Object[]{orderId}, ORDER_ROW_MAPPER);
     }
 
 }

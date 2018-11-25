@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequestMapping(path = "/ProducerController")
 @Controller
-public class ProducerController extends ExceptionHandlingHttpServlet {
+public class ProducerController {
 
     private static final long serialVersionUID = 1L;
     private static String insert_or_edit = "WEB-INF/Producer.jsp";

@@ -17,7 +17,6 @@ import java.io.IOException;
 @Controller
 public class CategoryController {
 
-    private static final long serialVersionUID = 1L;
     private static String insert_or_edit = "WEB-INF/Category.jsp";
     private static String list_category = "WEB-INF/ListCategory.jsp";
 

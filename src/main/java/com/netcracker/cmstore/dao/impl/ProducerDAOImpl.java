@@ -1,14 +1,12 @@
 package com.netcracker.cmstore.dao.impl;
 
 import com.netcracker.cmstore.dao.ProducerDAO;
-import com.netcracker.cmstore.dao.exception.DaoException;
 import com.netcracker.cmstore.model.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,96 +18,53 @@ public class ProducerDAOImpl implements ProducerDAO {
     private static final String UPDATE_PRODUCER = "UPDATE producer SET brand_name=?, description=?, logo=? WHERE producer.id=?";
     private static final String DELETE_PRODUCER = "DELETE FROM producer WHERE producer.id=?";
 
-    private final DataSource dataSource;
+    private static final RowMapper<Producer> PRODUCER_ROW_MAPPER = (rs, rowNum) -> {
+        Producer producer = new Producer();
+        producer.setProducerId(rs.getInt("id"));
+        producer.setBrand_name(rs.getString("brand_name"));
+        producer.setDescription(rs.getString("description"));
+        producer.setLogo(rs.getString("logo"));
+        return producer;
+    };
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ProducerDAOImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public ProducerDAOImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void addProducer(Producer producer) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCER)) {
-
-                statement.setString(1, producer.getBrand_name());
-                statement.setString(2, producer.getDescription());
-                statement.setString(3, producer.getDescription());
-
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        jdbcTemplate.update(INSERT_PRODUCER, statement -> {
+            statement.setString(1, producer.getBrand_name());
+            statement.setString(2, producer.getDescription());
+            statement.setString(3, producer.getDescription());
+        });
     }
 
     @Override
     public void removeProducer(int producerId) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCER)) {
-                statement.setInt(1, producerId);
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        jdbcTemplate.update(DELETE_PRODUCER, statement -> statement.setInt(1, producerId));
     }
 
     @Override
     public void updateProducer(Producer producer) {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCER)) {
-                statement.setString(1, producer.getBrand_name());
-                statement.setString(2, producer.getDescription());
-                statement.setString(3, producer.getLogo());
-                statement.setInt(4, producer.getProducerId());
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        jdbcTemplate.update(UPDATE_PRODUCER, statement -> {
+            statement.setString(1, producer.getBrand_name());
+            statement.setString(2, producer.getDescription());
+            statement.setString(3, producer.getLogo());
+            statement.setInt(4, producer.getProducerId());
+        });
     }
 
     @Override
     public List<Producer> getProducers() {
-        try (Connection connection = dataSource.getConnection()) {
-            List<Producer> producers = new ArrayList<>();
-            try (Statement stmt = connection.createStatement();
-                 ResultSet res = stmt.executeQuery(SELECT_PRODUCERS)) {
-                while (res.next()) {
-                    Producer producer = new Producer();
-                    producer.setProducerId(res.getInt("id"));
-                    producer.setBrand_name(res.getString("brand_name"));
-                    producer.setDescription(res.getString("description"));
-                    producer.setLogo(res.getString("logo"));
-                    producers.add(producer);
-                }
-            }
-            return producers;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return jdbcTemplate.query(SELECT_PRODUCERS, PRODUCER_ROW_MAPPER);
     }
 
     @Override
     public Producer getProducerById(int producerId) {
-        try (Connection connection = dataSource.getConnection()) {
-            Producer producer = new Producer();
-            try (PreparedStatement statement = connection.prepareStatement(SELECT_PRODUCER)) {
-                statement.setInt(1, producerId);
-                try (ResultSet res = statement.executeQuery()) {
-                    if (res.next()) {
-                        producer.setProducerId(res.getInt("id"));
-                        producer.setBrand_name(res.getString("brand_name"));
-                        producer.setDescription(res.getString("description"));
-                        producer.setLogo(res.getString("logo"));
-                    }
-                }
-            }
-            return producer;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return jdbcTemplate.queryForObject(SELECT_PRODUCER, new Object[]{producerId}, PRODUCER_ROW_MAPPER);
     }
-
 }
