@@ -1,6 +1,7 @@
 package com.netcracker.cmstore.dao;
 
 import com.netcracker.cmstore.model.Order;
+import com.netcracker.cmstore.model.Product;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface OrderDAO {
     List<Order> getOrders();
 
     Order getOrderById(int orderId);
+
 }

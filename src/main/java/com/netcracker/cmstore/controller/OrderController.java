@@ -1,7 +1,6 @@
 package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.OrderDAO;
-import com.netcracker.cmstore.dao.OrderProductDAO;
 import com.netcracker.cmstore.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,13 +20,11 @@ public class OrderController {
     private static String insert = "WEB-INF/Order.jsp";
     private static String list_order = "WEB-INF/ListOrder.jsp";
     private final OrderDAO orderDao;
-    private final OrderProductDAO orderProductDao;
 
     @Autowired
-    public OrderController(OrderDAO orderDao, OrderProductDAO orderProductDao) {
+    public OrderController(OrderDAO orderDao) {
         super();
         this.orderDao = orderDao;
-        this.orderProductDao = orderProductDao;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -46,9 +43,9 @@ public class OrderController {
             }
 
             if (productId > 0) {
-                orderProductDao.removeOrderProduct(orderId, productId);
+               // orderDao.removeOrderProduct(orderId, productId);
             } else {
-                orderDao.removeOrder(orderId);
+                //orderDao.removeOrder(orderId);
             }
 
             forward = list_order;
@@ -73,7 +70,6 @@ public class OrderController {
 
         order.setCustomerId(Integer.valueOf(request.getParameter("customerId")));
         order.setDate(request.getParameter("date"));
-
 
         orderDao.addOrder(order);
 

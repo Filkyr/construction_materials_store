@@ -17,7 +17,6 @@ import java.io.IOException;
 @Controller
 public class ProducerController {
 
-    private static final long serialVersionUID = 1L;
     private static String insert_or_edit = "WEB-INF/Producer.jsp";
     private static String list_producer = "WEB-INF/ListProducer.jsp";
     private final ProducerDAO producerDao;

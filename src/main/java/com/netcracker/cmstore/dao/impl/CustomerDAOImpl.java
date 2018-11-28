@@ -52,7 +52,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public Customer getCustomerById(int customerId) {
         Session session = this.sessionFactory.getCurrentSession();
-        return session.load(Customer.class, customerId);
+        return session.get(Customer.class, customerId);
     }
 
 }

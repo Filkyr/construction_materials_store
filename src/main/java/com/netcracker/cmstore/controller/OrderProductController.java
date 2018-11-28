@@ -1,7 +1,8 @@
 package com.netcracker.cmstore.controller;
 
-import com.netcracker.cmstore.dao.OrderProductDAO;
-import com.netcracker.cmstore.model.OrderProduct;
+import com.netcracker.cmstore.dao.OrderDAO;
+import com.netcracker.cmstore.model.Order;
+import com.netcracker.cmstore.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +19,12 @@ import java.io.IOException;
 public class OrderProductController {
 
     private static String insert = "WEB-INF/OrderProduct.jsp";
-    private final OrderProductDAO orderProductDao;
+    private final OrderDAO orderDao;
 
     @Autowired
-    public OrderProductController(OrderProductDAO orderProductDao) {
+    public OrderProductController(OrderDAO orderDao) {
         super();
-        this.orderProductDao = orderProductDao;
+        this.orderDao = orderDao;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -35,19 +36,20 @@ public class OrderProductController {
         }
         RequestDispatcher view = request.getRequestDispatcher(forward);
         view.forward(request, response);
-
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        OrderProduct orderProduct = new OrderProduct();
-        orderProduct.setOrderId(Integer.valueOf(request.getParameter("orderId")));
-        orderProduct.setProductId(Integer.valueOf(request.getParameter("productId")));
 
-        if (request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty()) {
+        if (!(request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty())) {
 
-        } else {
-            orderProductDao.addOrderProduct(orderProduct);
+            Order order = new Order();
+            order.setId(Integer.valueOf(request.getParameter("orderId")));
+            Product product = new Product();
+            product.setProductId(Integer.valueOf(request.getParameter("productId")));
+            order.setOrderProduct(product);
+            orderDao.updateOrder(order);
+
         }
 
         response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");

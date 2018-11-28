@@ -1,6 +1,10 @@
 package com.netcracker.cmstore.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -25,6 +29,9 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders = new ArrayList<>();
 
     public int getProductId() {
         return productId;

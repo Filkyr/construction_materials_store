@@ -44,6 +44,7 @@ public class AppConfig {
 
         props.put(SHOW_SQL, env.getRequiredProperty("hibernate.show_sql"));
         props.put(HBM2DDL_AUTO, env.getRequiredProperty("hibernate.hbm2ddl.auto"));
+        props.put("hibernate.globally_quoted_identifiers", "true");
 
         props.put(CON_TIMEOUT, env.getRequiredProperty(CON_TIMEOUT));
         props.put(MIN_IDLE, env.getRequiredProperty(MIN_IDLE));//10
@@ -51,7 +52,7 @@ public class AppConfig {
         props.put(IDLE_TIMEOUT, env.getRequiredProperty(IDLE_TIMEOUT));//300000
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(Category.class, Customer.class, Producer.class, Product.class);
+        factoryBean.setAnnotatedClasses(Category.class, Customer.class, Order.class, Producer.class, Product.class);
 
         return factoryBean;
     }

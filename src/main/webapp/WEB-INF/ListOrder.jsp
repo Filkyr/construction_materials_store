@@ -57,17 +57,20 @@
                             <c:out value="${order.date}"/>
                         </td>
                         <td class="overflowHidden">
-                            <c:out value="${order.productId}"/>
+                            <c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="OrderController?action=delete&id=<c:out value="${order.id}"/>&productId=<c:out value="${order.productId}"/>">Delete</a>
+                        <td td class="overflowHidden">
+                            <a href="OrderController?action=delete&id= <c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
+                        </td>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
             <a href="OrderController?action=insert" class="btn btn-outline-primary" role="button">Add new order</a>
-            <a href="OrderProductController?action=insert" class="btn btn-outline-primary" role="button">Add product to order</a>
+            <a href="OrderProductController?action=insert" class="btn btn-outline-primary" role="button">Add product to
+                order</a>
 
         </div>
     </section>

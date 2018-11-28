@@ -1,17 +1,16 @@
 package com.netcracker.cmstore.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "order")
-@SecondaryTable(name = "order_product", pkJoinColumns =
-    @PrimaryKeyJoinColumn(name = "order_id", referencedColumnName = "id")
-)
 public class Order {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
 
     @Column(name = "customer_id")
@@ -20,8 +19,17 @@ public class Order {
     @Column(name = "date")
     private String date;
 
-    @Column(name = "product_id", table = "order_product")
-    private String productId;
+    @ManyToMany
+    @JoinTable(name = "order_product", joinColumns = {@JoinColumn(name = "order_id")}, inverseJoinColumns = {@JoinColumn(name = "product_id")})
+    private List<Product> products = new ArrayList<>();
+
+    public List<Product> getProducts() {
+        return this.products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public int getId() {
         return id;
@@ -47,11 +55,7 @@ public class Order {
         this.date = date;
     }
 
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setOrderProduct(Product product) {
+        this.products.add(product);
     }
 }

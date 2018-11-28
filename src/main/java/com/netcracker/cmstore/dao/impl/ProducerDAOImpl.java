@@ -55,6 +55,6 @@ public class ProducerDAOImpl implements ProducerDAO {
     @Override
     public Producer getProducerById(int producerId) {
         Session session = this.sessionFactory.getCurrentSession();
-        return session.load(Producer.class, producerId);
+        return session.get(Producer.class, producerId);
     }
 }
