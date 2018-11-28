@@ -1,9 +1,20 @@
 package com.netcracker.cmstore.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "category")
 public class Category {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "description")
     private String description;
 
     public int getCategoryId() {

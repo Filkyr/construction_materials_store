@@ -3,40 +3,37 @@ package com.netcracker.cmstore.dao.impl;
 
 import com.netcracker.cmstore.dao.OrderProductDAO;
 import com.netcracker.cmstore.model.OrderProduct;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
+
 public class OrderProductDAOImpl implements OrderProductDAO {
 
-    private static final String INSERT_OrderProduct = "INSERT INTO order_product (order_product.order_id, order_product.product_id) VALUES (?, ?)";
-
-    private static final String DELETE_OrderProduct = "DELETE FROM order_product WHERE order_product.order_id=? AND order_product.product_id=?";
-
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public OrderProductDAOImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public OrderProductDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void addOrderProduct(OrderProduct orderProduct) {
-        jdbcTemplate.update(INSERT_OrderProduct, statement -> {
-
-            statement.setInt(1, orderProduct.getOrderId());
-            statement.setInt(2, orderProduct.getProductId());
-
-        });
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(orderProduct);
     }
 
     @Override
-    public void removeOrderProduct(int orderId, int productId) {
-        jdbcTemplate.update(DELETE_OrderProduct, statement -> {
-            statement.setInt(1, orderId);
-            statement.setInt(2, productId);
-
-        });
+    public void removeOrderProduct(int orderId, int orderProductId) {
+//        Session session = this.sessionFactory.getCurrentSession();
+//        OrderProduct p = session.load(OrderProduct.class, orderProductId);
+//        if (null != p) {
+//            session.delete(p);
+//        }
     }
+
 }

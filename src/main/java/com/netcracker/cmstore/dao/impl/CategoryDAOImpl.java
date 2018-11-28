@@ -2,67 +2,56 @@ package com.netcracker.cmstore.dao.impl;
 
 import com.netcracker.cmstore.dao.CategoryDAO;
 import com.netcracker.cmstore.model.Category;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public class CategoryDAOImpl implements CategoryDAO {
-    private static final String INSERT_CATEGORY = "INSERT INTO category (title, description) VALUES (?, ?)";
-    private static final String SELECT_CATEGORY = "SELECT * FROM category WHERE category.id =?";
-    private static final String SELECT_CATEGORIES = "SELECT * FROM category";
-    private static final String UPDATE_CATEGORY = "UPDATE category SET title=?, description=? WHERE category.id=?";
-    private static final String DELETE_CATEGORY = "DELETE FROM category WHERE category.id=?";
-
-    private static final RowMapper<Category> CATEGORY_ROW_MAPPER = (rs, rowNum) -> {
-        Category category = new Category();
-        category.setCategoryId(rs.getInt("id"));
-        category.setTitle(rs.getString("title"));
-        category.setDescription(rs.getString("description"));
-        return category;
-    };
-
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public CategoryDAOImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CategoryDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
-
 
     @Override
     public void addCategory(Category category) {
-        jdbcTemplate.update(INSERT_CATEGORY, statement -> {
-            statement.setString(1, category.getTitle());
-            statement.setString(2, category.getDescription());
-        });
+        Session session = this.sessionFactory.getCurrentSession();
+        session.persist(category);
     }
 
     @Override
     public void removeCategory(int categoryId) {
-        jdbcTemplate.update(DELETE_CATEGORY, statement -> statement.setInt(1, categoryId));
+        Session session = this.sessionFactory.getCurrentSession();
+        Category p = session.load(Category.class, categoryId);
+        if (null != p) {
+            session.delete(p);
+        }
     }
 
     @Override
     public void updateCategory(Category category) {
-        jdbcTemplate.update(UPDATE_CATEGORY, statement -> {
-            statement.setString(1, category.getTitle());
-            statement.setString(2, category.getDescription());
-            statement.setInt(3, category.getCategoryId());
-        });
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(category);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Category> getCategories() {
-        return jdbcTemplate.query(SELECT_CATEGORIES, CATEGORY_ROW_MAPPER);
+        Session session = this.sessionFactory.getCurrentSession();
+        return session.createQuery("from Category").list();
     }
 
     @Override
     public Category getCategoryById(int categoryId) {
-        return jdbcTemplate.queryForObject(SELECT_CATEGORY, new Object[] { categoryId },CATEGORY_ROW_MAPPER);
+        Session session = this.sessionFactory.getCurrentSession();
+        return session.get(Category.class, categoryId);
     }
 }
 

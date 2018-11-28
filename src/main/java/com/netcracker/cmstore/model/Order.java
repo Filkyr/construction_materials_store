@@ -1,10 +1,26 @@
 package com.netcracker.cmstore.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "order")
+@SecondaryTable(name = "order_product", pkJoinColumns =
+    @PrimaryKeyJoinColumn(name = "order_id", referencedColumnName = "id")
+)
 public class Order {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "customer_id")
     private int customerId;
+
+    @Column(name = "date")
     private String date;
+
+    @Column(name = "product_id", table = "order_product")
     private String productId;
 
     public int getId() {
