@@ -16,4 +16,5 @@ public interface OrderDAO {
 
     Order getOrderById(int orderId);
 
+    void removeOrderProduct(int orderId, int productId);
 }

@@ -60,8 +60,7 @@
                             <c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>
                         </td>
                         <td td class="overflowHidden">
-                        <td td class="overflowHidden">
-                            <a href="OrderController?action=delete&id= <c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
+                            <a href="OrderController?action=delete&id= <c:out value="${order.id}"/>&productId=<c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
                         </td>
                         </td>
                     </tr>

@@ -2,6 +2,7 @@ package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.OrderDAO;
 import com.netcracker.cmstore.model.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @RequestMapping(path = "/OrderController")
 @Controller
@@ -33,19 +35,29 @@ public class OrderController {
         String action = request.getParameter("action");
         if ("delete".equalsIgnoreCase(action)) {
 
-            int orderId = Integer.parseInt(request.getParameter("id"));
+            Enumeration<String> params = request.getParameterNames();
+            while(params.hasMoreElements()){
+                String paramName = params.nextElement();
+                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+            }
+
+            String orderIdString = request.getParameter("id").replaceAll("\\s+","");
+            String productIdString = request.getParameter("productId").replaceAll("\\s+","");
+
+            int orderId = 0;
             int productId = 0;
 
             try {
-                productId = Integer.parseInt(request.getParameter("productId"));
+                orderId = Integer.parseInt(orderIdString);
+                productId = Integer.parseInt(productIdString);
             } catch (NumberFormatException e) {
-                System.out.println("NumberFormatException in productId");
+                System.out.println("NumberFormatException in 'OrderController' while processing orderId or productId");
             }
 
             if (productId > 0) {
-               // orderDao.removeOrderProduct(orderId, productId);
+                orderDao.removeOrderProduct(orderId, productId);
             } else {
-                //orderDao.removeOrder(orderId);
+                orderDao.removeOrder(orderId);
             }
 
             forward = list_order;
