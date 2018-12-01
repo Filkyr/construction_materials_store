@@ -1,6 +1,6 @@
 package com.netcracker.cmstore.controller;
 
-import com.netcracker.cmstore.dao.OrderDAO;
+import com.netcracker.cmstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +17,12 @@ import java.io.IOException;
 public class OrderProductController {
 
     private static String insert = "WEB-INF/OrderProduct.jsp";
-    private final OrderDAO orderDao;
+    private final OrderService orderService;
 
     @Autowired
-    public OrderProductController(OrderDAO orderDao) {
+    public OrderProductController(OrderService orderService) {
         super();
-        this.orderDao = orderDao;
+        this.orderService = orderService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -41,7 +41,7 @@ public class OrderProductController {
 
         if (!(request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty())) {
 
-            orderDao.addOrderProduct(Integer.valueOf(request.getParameter("orderId")), Integer.valueOf(request.getParameter("productId")));
+            orderService.addOrderProduct(Integer.valueOf(request.getParameter("orderId")), Integer.valueOf(request.getParameter("productId")));
         }
 
         response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");

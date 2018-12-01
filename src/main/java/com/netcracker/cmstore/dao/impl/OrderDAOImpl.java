@@ -8,13 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
-@Transactional
-
 public class OrderDAOImpl implements OrderDAO {
     private final SessionFactory sessionFactory;
 
@@ -56,9 +53,7 @@ public class OrderDAOImpl implements OrderDAO {
     public List<Order> getOrders() {
         Session session = this.sessionFactory.getCurrentSession();
         List list = session.createQuery("select o from Order o left join fetch o.products order by o.id ASC").getResultList();
-        for (Object order : list) {
-            System.out.println(order.toString());
-        }
+
         return list;
     }
 

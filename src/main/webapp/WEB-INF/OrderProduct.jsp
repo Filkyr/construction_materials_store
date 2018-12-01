@@ -24,7 +24,7 @@
     <form method="POST" action='OrderProductController' name="frmAddOrderProduct" role="form">
         <div class="form-group">
             <label for="orderId">
-               OrderProduct ID: <input class="form-control" type="number" id="orderId" name="orderId" value=<c:out value="${orderProduct.orderId}" /> />
+               Order ID: <input class="form-control" type="number" id="orderId" name="orderId" value=<c:out value="${orderProduct.orderId}" /> />
             </label>
         </div>
         <div class="form-group">

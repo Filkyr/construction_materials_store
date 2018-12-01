@@ -1,7 +1,7 @@
 package com.netcracker.cmstore.controller;
 
-import com.netcracker.cmstore.dao.ProductDAO;
 import com.netcracker.cmstore.model.Product;
+import com.netcracker.cmstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +19,12 @@ public class ProductController {
 
     private static String insert_or_edit = "WEB-INF/Product.jsp";
     private static String list_product = "WEB-INF/ListProduct.jsp";
-    private final ProductDAO productDao;
+    private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductDAO productDao) {
+    public ProductController(ProductService productService) {
         super();
-        this.productDao = productDao;
+        this.productService = productService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -34,20 +34,20 @@ public class ProductController {
         if ("delete".equalsIgnoreCase(action)) {
             int productId = Integer.parseInt(request.getParameter("productId"));
 
-            productDao.removeProduct(productId);
+            productService.removeProduct(productId);
 
             forward = list_product;
-            request.setAttribute("products", productDao.getProducts());
+            request.setAttribute("products", productService.getProducts());
 
         } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int productId = Integer.parseInt(request.getParameter("productId"));
-            Product product = productDao.getProductById(productId);
+            Product product = productService.getProductById(productId);
             request.setAttribute("product", product);
 
         } else if ("listProduct".equalsIgnoreCase(action)) {
             forward = list_product;
-            request.setAttribute("products", productDao.getProducts());
+            request.setAttribute("products", productService.getProducts());
 
         } else if ("insert".equalsIgnoreCase(action)) {
 
@@ -70,10 +70,10 @@ public class ProductController {
         String productId = request.getParameter("productId");
 
         if (productId == null || productId.isEmpty()) {
-            productDao.addProduct(product);
+            productService.addProduct(product);
         } else {
             product.setProductId(Integer.parseInt(productId));
-            productDao.updateProduct(product);
+            productService.updateProduct(product);
         }
 
         response.sendRedirect(request.getContextPath() + "ProductController?action=listProduct");

@@ -19,7 +19,7 @@ import static org.hibernate.cfg.Environment.*;
 @Configuration
 @PropertySource(value = "classpath:/application.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.netcracker.cmstore.dao", "com.netcracker.cmstore.controller"})
+@ComponentScan(basePackages = {"com.netcracker.cmstore.dao", "com.netcracker.cmstore.controller", "com.netcracker.cmstore.service"})
 @EnableWebMvc
 public class AppConfig {
 

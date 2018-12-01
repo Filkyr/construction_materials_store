@@ -1,7 +1,7 @@
 package com.netcracker.cmstore.controller;
 
-import com.netcracker.cmstore.dao.CategoryDAO;
 import com.netcracker.cmstore.model.Category;
+import com.netcracker.cmstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +20,12 @@ public class CategoryController {
     private static String insert_or_edit = "WEB-INF/Category.jsp";
     private static String list_category = "WEB-INF/ListCategory.jsp";
 
-    private final CategoryDAO categoryDAOimpl;
+    private final CategoryService categoryServiceimpl;
 
     @Autowired
-    public CategoryController(CategoryDAO categoryDao) {
+    public CategoryController(CategoryService categoryService) {
         super();
-        this.categoryDAOimpl = categoryDao;
+        this.categoryServiceimpl = categoryService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -35,24 +35,24 @@ public class CategoryController {
         if ("delete".equalsIgnoreCase(action)) {
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
-            categoryDAOimpl.removeCategory(categoryId);
+            categoryServiceimpl.removeCategory(categoryId);
 
             forward = list_category;
 
-            request.setAttribute("categories", categoryDAOimpl.getCategories());
+            request.setAttribute("categories", categoryServiceimpl.getCategories());
 
         } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
-            Category category = categoryDAOimpl.getCategoryById(categoryId);
+            Category category = categoryServiceimpl.getCategoryById(categoryId);
 
             request.setAttribute("category", category);
 
         } else if ("listCategory".equalsIgnoreCase(action)) {
             forward = list_category;
 
-            request.setAttribute("categories", categoryDAOimpl.getCategories());
+            request.setAttribute("categories", categoryServiceimpl.getCategories());
         } else if ("insert".equalsIgnoreCase(action)) {
 
             forward = insert_or_edit;
@@ -70,10 +70,10 @@ public class CategoryController {
         String categoryId = request.getParameter("categoryId");
 
         if (categoryId == null || categoryId.isEmpty()) {
-            categoryDAOimpl.addCategory(category);
+            categoryServiceimpl.addCategory(category);
         } else {
             category.setCategoryId(Integer.parseInt(categoryId));
-            categoryDAOimpl.updateCategory(category);
+            categoryServiceimpl.updateCategory(category);
         }
 
         response.sendRedirect(request.getContextPath() + "/CategoryController?action=listCategory");

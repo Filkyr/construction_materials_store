@@ -1,7 +1,7 @@
 package com.netcracker.cmstore.controller;
 
-import com.netcracker.cmstore.dao.ProducerDAO;
 import com.netcracker.cmstore.model.Producer;
+import com.netcracker.cmstore.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +19,12 @@ public class ProducerController {
 
     private static String insert_or_edit = "WEB-INF/Producer.jsp";
     private static String list_producer = "WEB-INF/ListProducer.jsp";
-    private final ProducerDAO producerDao;
+    private final ProducerService producerService;
 
     @Autowired
-    public ProducerController(ProducerDAO producerDao) {
+    public ProducerController(ProducerService producerService) {
         super();
-        this.producerDao = producerDao;
+        this.producerService = producerService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -34,20 +34,20 @@ public class ProducerController {
         if ("delete".equalsIgnoreCase(action)) { // better to eq start from constant, cuz it prevent you from NPE
             int producerId = Integer.parseInt(request.getParameter("producerId"));
 
-            producerDao.removeProducer(producerId);
+            producerService.removeProducer(producerId);
 
             forward = list_producer;
-            request.setAttribute("producers", producerDao.getProducers());
+            request.setAttribute("producers", producerService.getProducers());
 
         } else if ("edit".equalsIgnoreCase(action)) {
             forward = insert_or_edit;
             int producerId = Integer.parseInt(request.getParameter("producerId"));
-            Producer producer = producerDao.getProducerById(producerId);
+            Producer producer = producerService.getProducerById(producerId);
             request.setAttribute("producer", producer);
 
         } else if ("listProducer".equalsIgnoreCase(action)) {
             forward = list_producer;
-            request.setAttribute("producers", producerDao.getProducers());
+            request.setAttribute("producers", producerService.getProducers());
 
         } else if ("insert".equalsIgnoreCase(action)) {
 
@@ -67,10 +67,10 @@ public class ProducerController {
         String producerId = request.getParameter("producerId");
 
         if (producerId == null || producerId.isEmpty()) {
-            producerDao.addProducer(producer);
+            producerService.addProducer(producer);
         } else {
             producer.setProducerId(Integer.parseInt(producerId));
-            producerDao.updateProducer(producer);
+            producerService.updateProducer(producer);
         }
 
         response.sendRedirect(request.getContextPath() + "/ProducerController?action=listProducer");
