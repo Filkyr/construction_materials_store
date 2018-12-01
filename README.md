@@ -1,6 +1,6 @@
 # Construction Materials Store
-## v1.1
-**New in v1.1:**  _Now the application is running on the Spring Framework._
+## v1.2
+**New in v1.2:**  _Now the application is running on the Spring & Hibernate._
 
 This web application implements an online construction materials store.
 Supports CRUD operations on following tables: 

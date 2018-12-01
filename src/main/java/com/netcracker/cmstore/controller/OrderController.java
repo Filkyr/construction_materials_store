@@ -78,9 +78,6 @@ public class OrderController {
 
         orderService.addOrder(order);
 
-        System.out.println("customerId: " + Integer.valueOf(request.getParameter("customerId")));
-        System.out.println("date: " + request.getParameter("date"));
-
         response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");
 
     }
