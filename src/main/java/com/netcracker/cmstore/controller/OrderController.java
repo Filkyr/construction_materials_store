@@ -2,7 +2,6 @@ package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.OrderDAO;
 import com.netcracker.cmstore.model.Order;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +35,13 @@ public class OrderController {
         if ("delete".equalsIgnoreCase(action)) {
 
             Enumeration<String> params = request.getParameterNames();
-            while(params.hasMoreElements()){
+            while (params.hasMoreElements()) {
                 String paramName = params.nextElement();
-                System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+                System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
             }
 
-            String orderIdString = request.getParameter("id").replaceAll("\\s+","");
-            String productIdString = request.getParameter("productId").replaceAll("\\s+","");
+            String orderIdString = request.getParameter("id").replaceAll("\\s+", "");
+            String productIdString = request.getParameter("productId").replaceAll("\\s+", "");
 
             int orderId = 0;
             int productId = 0;
@@ -87,7 +86,6 @@ public class OrderController {
 
         System.out.println("customerId: " + Integer.valueOf(request.getParameter("customerId")));
         System.out.println("date: " + request.getParameter("date"));
-
 
         response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");
 

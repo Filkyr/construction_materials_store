@@ -55,7 +55,4 @@ public class Order {
         this.date = date;
     }
 
-    public void setOrderProduct(Product product) {
-        this.products.add(product);
-    }
 }

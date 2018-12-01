@@ -1,8 +1,6 @@
 package com.netcracker.cmstore.controller;
 
 import com.netcracker.cmstore.dao.OrderDAO;
-import com.netcracker.cmstore.model.Order;
-import com.netcracker.cmstore.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +41,7 @@ public class OrderProductController {
 
         if (!(request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty())) {
 
-            Order order = new Order();
-            order.setId(Integer.valueOf(request.getParameter("orderId")));
-            Product product = new Product();
-            product.setProductId(Integer.valueOf(request.getParameter("productId")));
-            order.setOrderProduct(product);
-            orderDao.updateOrder(order);
-
+            orderDao.addOrderProduct(Integer.valueOf(request.getParameter("orderId")), Integer.valueOf(request.getParameter("productId")));
         }
 
         response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");

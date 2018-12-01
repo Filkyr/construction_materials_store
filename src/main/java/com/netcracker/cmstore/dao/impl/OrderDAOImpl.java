@@ -30,18 +30,25 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
+    public void addOrderProduct(int orderId, int productId) {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        Order order = session.load(Order.class, orderId);
+        Product product = session.load(Product.class, productId);
+
+        List<Product> productList = order.getProducts();
+        productList.add(product);
+
+        session.persist(order);
+    }
+
+    @Override
     public void removeOrder(int orderId) {
         Session session = this.sessionFactory.getCurrentSession();
         Order p = session.load(Order.class, orderId);
         if (null != p) {
             session.delete(p);
         }
-    }
-
-    @Override
-    public void updateOrder(Order order) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.update(order);
     }
 
     @SuppressWarnings("unchecked")
@@ -56,21 +63,12 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order getOrderById(int orderId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        return session.get(Order.class, orderId);
-    }
-
-    @Override
     public void removeOrderProduct(int orderId, int productId) {
         Session session = this.sessionFactory.getCurrentSession();
         Order o = session.load(Order.class, orderId);
-        if (null != o) {
-            for (Product products : o.getProducts()) {
-                if (products.getProductId() == productId) {
-                    //o.getProducts().remove(products);
-                }
-            }
+        List<Product> productList = o.getProducts();
+        if (o != null) {
+            productList.removeIf(product -> product.getProductId() == productId);
             session.save(o);
         }
     }
