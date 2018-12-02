@@ -20,7 +20,7 @@ public class Customer {
     @Column(name = "phone_num")
     private String phoneNum;
 
-    @Column(name = "address") //судя по всему можно было и не писать это т.к. столбец и переменная совпадают
+    @Column(name = "address")
     private String address;
 
     public int getId() {

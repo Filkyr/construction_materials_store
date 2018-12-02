@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private final CustomerDAO customerDao;
+
     @Autowired
-    private CustomerDAO customerDao;
+    public CustomerServiceImpl(CustomerDAO customerDao) {
+        this.customerDao = customerDao;
+    }
 
     @Transactional
     @Override

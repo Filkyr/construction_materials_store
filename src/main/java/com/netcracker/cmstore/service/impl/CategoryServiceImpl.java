@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private final CategoryDAO categoryDao;
+
     @Autowired
-    private CategoryDAO categoryDao;
+    public CategoryServiceImpl(CategoryDAO categoryDao) {
+        this.categoryDao = categoryDao;
+    }
 
     @Transactional
     @Override

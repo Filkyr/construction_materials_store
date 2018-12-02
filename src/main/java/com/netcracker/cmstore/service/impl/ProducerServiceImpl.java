@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class ProducerServiceImpl implements ProducerService {
 
+    private final ProducerDAO producerDao;
+
     @Autowired
-    private ProducerDAO producerDao;
+    public ProducerServiceImpl(ProducerDAO producerDao) {
+        this.producerDao = producerDao;
+    }
 
     @Transactional
     @Override
