@@ -52,7 +52,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public List<Order> getOrders() {
         Session session = this.sessionFactory.getCurrentSession();
-        return session.createQuery("from Order o left join fetch o.products order by o.id ASC").getResultList();
+        return session.createQuery("from Order o order by o.id ASC").getResultList();
     }
 
     @Override

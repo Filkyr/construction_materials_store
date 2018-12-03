@@ -46,24 +46,49 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${orders}" var="order">
-                    <tr>
-                        <td class="overflowHidden">
-                            <c:out value="${order.id}"/>
-                        </td>
-                        <td class="overflowHidden">
-                            <c:out value="${order.customerId}"/>
-                        </td>
-                        <td class="overflowHidden">
-                            <c:out value="${order.date}"/>
-                        </td>
-                        <td class="overflowHidden">
-                            <c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>
-                        </td>
-                        <td td class="overflowHidden">
-                            <a href="OrderController?action=delete&id= <c:out value="${order.id}"/>&productId=<c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
-                        </td>
-                        </td>
-                    </tr>
+                    <c:choose>
+                        <c:when test="${order.products.isEmpty()}">
+                            <tr>
+                                <td class="overflowHidden">
+                                    <c:out value="${order.id}"/>
+                                </td>
+                                <td class="overflowHidden">
+                                    <c:out value="${order.customerId}"/>
+                                </td>
+                                <td class="overflowHidden">
+                                    <c:out value="${order.date}"/>
+                                </td>
+                                <td class="overflowHidden">
+
+                                </td>
+                                <td class="overflowHidden">
+                                    <a href="OrderController?action=delete&id= <c:out value="${order.id}"/>&productId=<c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${order.products}" var="item">
+                                <tr>
+                                    <td class="overflowHidden">
+                                        <c:out value="${order.id}"/>
+                                    </td>
+                                    <td class="overflowHidden">
+                                        <c:out value="${order.customerId}"/>
+                                    </td>
+                                    <td class="overflowHidden">
+                                        <c:out value="${order.date}"/>
+                                    </td>
+                                    <td class="overflowHidden">
+                                            ${item.getProductId()}
+                                    </td>
+                                    <td class="overflowHidden">
+                                        <a href="OrderController?action=delete&id=<c:out value="${order.id}"/>&productId=${item.getProductId()}">Delete</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+
                 </c:forEach>
                 </tbody>
             </table>
