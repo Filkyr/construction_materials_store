@@ -62,7 +62,7 @@ public class OrderDAOImpl implements OrderDAO {
         List<Product> productList = o.getProducts();
         if (o != null) {
             productList.removeIf(product -> product.getProductId() == productId);
-            session.save(o);
+            session.persist(o);
         }
     }
 
