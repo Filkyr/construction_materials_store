@@ -8,6 +8,6 @@
     <title>CM Store</title>
 </head>
 <body>
-<jsp:forward page="/ProductController?action=listProduct"/>
+<jsp:forward page="/product/list"/>
 </body>
 </html>

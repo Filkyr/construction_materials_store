@@ -21,9 +21,9 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void insertOrUpdateProduct(Product product) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.persist(product);
+        session.saveOrUpdate(product);
     }
 
     @Override
@@ -33,12 +33,6 @@ public class ProductDAOImpl implements ProductDAO {
         if (null != p) {
             session.delete(p);
         }
-    }
-
-    @Override
-    public void updateProduct(Product product) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.update(product);
     }
 
     @SuppressWarnings("unchecked")

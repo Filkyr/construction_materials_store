@@ -4,21 +4,17 @@ import com.netcracker.cmstore.model.Product;
 import com.netcracker.cmstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.validation.Valid;
+import java.util.List;
 
-@RequestMapping(path = "/ProductController")
+@RequestMapping("/")
 @Controller
 public class ProductController {
 
-    private static String insert_or_edit = "WEB-INF/Product.jsp";
-    private static String list_product = "WEB-INF/ListProduct.jsp";
     private final ProductService productService;
 
     @Autowired
@@ -27,57 +23,42 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("delete".equalsIgnoreCase(action)) {
-            int productId = Integer.parseInt(request.getParameter("productId"));
-
-            productService.removeProduct(productId);
-
-            forward = list_product;
-            request.setAttribute("products", productService.getProducts());
-
-        } else if ("edit".equalsIgnoreCase(action)) {
-            forward = insert_or_edit;
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            Product product = productService.getProductById(productId);
-            request.setAttribute("product", product);
-
-        } else if ("listProduct".equalsIgnoreCase(action)) {
-            forward = list_product;
-            request.setAttribute("products", productService.getProducts());
-
-        } else if ("insert".equalsIgnoreCase(action)) {
-
-            forward = insert_or_edit;
-
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-
+    @GetMapping("/product/list")
+    public String listProduct(ModelMap model) {
+        List products = productService.getProducts();
+        model.addAttribute("products", products);
+        return "ListProduct";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/product/delete/{productId}")
+    public String deleteProduct(@PathVariable String productId) {
+        productService.removeProduct(Integer.valueOf(productId));
+        return "redirect:/product/list";
+    }
+
+    @GetMapping("/product/insert")
+    public String newEmployee(ModelMap model) {
         Product product = new Product();
-        product.setTitle(request.getParameter("title"));
-        product.setCategoryId(Integer.valueOf(request.getParameter("categoryId")));
-        product.setProducerId(Integer.valueOf(request.getParameter("producerId")));
-        product.setImage(request.getParameter("image"));
-        product.setDescription(request.getParameter("description"));
-        String productId = request.getParameter("productId");
+        model.addAttribute("product", product);
+        model.addAttribute("edit", false);
+        return "Product";
+    }
 
-        if (productId == null || productId.isEmpty()) {
-            productService.addProduct(product);
-        } else {
-            product.setProductId(Integer.parseInt(productId));
-            productService.updateProduct(product);
+    @PostMapping("/product/updateOrInsert")
+    public String saveEmployee(@Valid Product product, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Product";
         }
+        productService.insertOrUpdateProduct(product);
+        return "redirect:/product/list";
+    }
 
-        response.sendRedirect(request.getContextPath() + "ProductController?action=listProduct");
-
+    @GetMapping("/product/edit/{productId}")
+    public String editEmployee(@PathVariable String productId, ModelMap model) {
+        Product product = productService.getProductById(Integer.valueOf(productId));
+        model.addAttribute("product", product);
+        model.addAttribute("edit", true);
+        return "Product";
     }
 
 }

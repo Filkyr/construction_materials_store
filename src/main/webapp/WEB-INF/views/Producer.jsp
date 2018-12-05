@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: filkyr
-  Date: 02.11.2018
-  Time: 22:15
+  Date: 31.10.2018
+  Time: 14:31
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -12,24 +12,34 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add product to order</title>
+    <title>Add or Edit producer</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="../templates/header.html"%>
+<%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='OrderProductController' name="frmAddOrderProduct" role="form">
+    <form method="POST" action='/producer/updateOrInsert' name="frmAddProducer" role="form">
         <div class="form-group">
-            <label for="orderId">
-               Order ID: <input class="form-control" type="number" id="orderId" name="orderId" value=<c:out value="${orderProduct.orderId}" /> />
+            <label for="producerId">
+                ID: <input class="form-control" type="number" id="producerId" name="producerId" readonly value=<c:out value="${producer.producerId}" /> />
             </label>
         </div>
         <div class="form-group">
-            <label for="productId">
-                Product ID: <input class="form-control" type="number" id="productId" name="productId" value="<c:out value="${orderProduct.productId}" />" />
+            <label for="brand_name">
+                Brand name:<input class="form-control" type="text" id="brand_name" name="brand_name" value="<c:out value="${producer.brand_name}" />" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="description">
+                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${producer.description}" />" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="description">
+                Logo: <input class="form-control" type="text" id="logo" name="logo" value="<c:out value="${producer.logo}" />" />
             </label>
         </div>
         <input type="submit" value="Submit" class="btn btn-outline-success" />

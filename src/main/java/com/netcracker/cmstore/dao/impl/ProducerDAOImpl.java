@@ -20,12 +20,6 @@ public class ProducerDAOImpl implements ProducerDAO {
     }
 
     @Override
-    public void addProducer(Producer producer) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.persist(producer);
-    }
-
-    @Override
     public void removeProducer(int producerId) {
         Session session = this.sessionFactory.getCurrentSession();
         Producer p = session.load(Producer.class, producerId);
@@ -35,9 +29,9 @@ public class ProducerDAOImpl implements ProducerDAO {
     }
 
     @Override
-    public void updateProducer(Producer producer) {
+    public void insertOrUpdateProducer(Producer producer) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.update(producer);
+        session.saveOrUpdate(producer);
     }
 
     @SuppressWarnings("unchecked")

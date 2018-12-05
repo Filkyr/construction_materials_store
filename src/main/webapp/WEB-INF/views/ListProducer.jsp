@@ -23,11 +23,11 @@
 
 </head>
 <body>
-<%@ include file="../templates/header.html"%>
+<%@ include file="../../templates/header.html" %>
 <div class="wrap">
     <section>
         <div class="container">
-            <table class="table table-striped"  style="table-layout: fixed">
+            <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                 <tr>
                     <th>
@@ -57,20 +57,31 @@
                             <c:out value="${producer.description}"/>
                         </td>
                         <td class="overflowHidden">
-                            <%--<c:out value="${producer.logo}"/>--%>
+                                <%--<c:out value="${producer.logo}"/>--%>
                             <img src="${producer.logo}" class="img-thumbnail" alt="Brand logo">
                         </td>
                         <td td class="overflowHidden">
-                            <a href="ProducerController?action=edit&producerId=<c:out value="${producer.producerId}"/>">Update</a>
+                            <a href="/producer/edit/<c:out value="${producer.producerId}"/>">Update</a>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="ProducerController?action=delete&producerId=<c:out value="${producer.producerId}"/>">Delete</a>
+                            <script type="text/javascript">
+                                function submitAsPost(url) {
+                                    var postForm = document.createElement('form');
+                                    postForm.action = url;
+                                    postForm.method = 'post';
+                                    var bodyTag = document.getElementsByTagName('body')[0];
+                                    bodyTag.appendChild(postForm);
+                                    postForm.submit();
+                                }
+                            </script>
+                            <a href="/producer/delete/<c:out value="${producer.producerId}"/>"
+                               onclick="submitAsPost(this.href); return false;">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="ProducerController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="/producer/insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>

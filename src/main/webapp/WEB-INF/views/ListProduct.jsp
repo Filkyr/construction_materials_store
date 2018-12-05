@@ -23,12 +23,12 @@
 
 </head>
 <body>
-<%@ include file="../templates/header.html" %>
+<%@ include file="../../templates/header.html" %>
 
 <%--<c:if test="${not empty warning}">--%>
-    <%--<div class="alert alert-danger alert-dismissible">--%>
-    <%--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--%>
-    <%--<strong>Error!</strong> Insert/Edit failed. Please, enter valid values.</div>--%>
+<%--<div class="alert alert-danger alert-dismissible">--%>
+<%--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--%>
+<%--<strong>Error!</strong> Insert/Edit failed. Please, enter valid values.</div>--%>
 <%--</c:if>--%>
 
 <div class="wrap">
@@ -79,16 +79,26 @@
                             <c:out value="${product.description}"/>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="ProductController?action=edit&productId=<c:out value="${product.productId}"/>">Update</a>
+                            <a href="/product/edit/<c:out value="${product.productId}"/>">Update</a>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="ProductController?action=delete&productId=<c:out value="${product.productId}"/>">Delete</a>
+                            <script type="text/javascript">
+                                function submitAsPost(url) {
+                                    var postForm = document.createElement('form');
+                                    postForm.action = url;
+                                    postForm.method = 'post';
+                                    var bodyTag = document.getElementsByTagName('body')[0];
+                                    bodyTag.appendChild(postForm);
+                                    postForm.submit();
+                                }
+                            </script>
+                            <a href="${pageContext.request.contextPath}/product/delete/<c:out value="${product.productId}"/>" onclick="submitAsPost(this.href); return false;">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="ProductController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="/product/insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>

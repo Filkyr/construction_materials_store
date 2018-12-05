@@ -18,44 +18,38 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
-<%@ include file="../templates/header.html" %>
+<%@ include file="../../templates/header.html" %>
 
 <div class="container">
-    <form method="POST" action='ProductController' name="frmAddProduct" role="form">
+    <form method="POST" action="/product/updateOrInsert" modelAttribute="product">
         <div class="form-group">
             <label for="productId">
-                ID: <input class="form-control" type="number" id="productId" name="productId" readonly value=
-            <c:out value="${product.productId}"/>/>
+                ID: <input class="form-control" type="number" id="productId" name="productId" readonly value=<c:out value="${product.productId}" /> />
             </label>
         </div>
         <div class="form-group">
             <label for="title">
-                Title:<input class="form-control" type="text" id="title" name="title"
-                             value="<c:out value="${product.title}" />"/>
+                Title:<input class="form-control" type="text" id="title" name="title" value="<c:out value="${product.title}" />"/>
             </label>
         </div>
         <div class="form-group">
             <label for="categoryId">
-                Category: <input class="form-control" type="number" id="categoryId" name="categoryId"
-                                 value="<c:out value="${product.categoryId}" />"/>
+                Category: <input class="form-control" type="number" id="categoryId" name="categoryId" value="<c:out value="${product.categoryId}" />"/>
             </label>
         </div>
         <div class="form-group">
             <label for="producerId">
-                Producer: <input class="form-control" type="number" id="producerId" name="producerId"
-                                 value="<c:out value="${product.producerId}" />"/>
+                Producer: <input class="form-control" type="number" id="producerId" name="producerId" value="<c:out value="${product.producerId}" />"/>
             </label>
         </div>
         <div class="form-group">
             <label for="image">
-                Image: <input class="form-control" type="text" id="image" name="image"
-                              value="<c:out value="${product.image}" />"/>
+                Image: <input class="form-control" type="text" id="image" name="image" value="<c:out value="${product.image}" />"/>
             </label>
         </div>
         <div class="form-group">
             <label for="description">
-                Description: <input class="form-control" type="text" id="description" name="description"
-                                    value="<c:out value="${product.description}" />"/>
+                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${product.description}" />"/>
             </label>
         </div>
         <input type="submit" value="Submit" class="btn btn-outline-success"/>

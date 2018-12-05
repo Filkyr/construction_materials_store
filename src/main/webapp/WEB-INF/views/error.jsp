@@ -12,32 +12,16 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Add or Edit category</title>
+    <title>Error...</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 <body>
-<%@ include file="../templates/header.html"%>
+<%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='CategoryController' name="frmAddCategory" role="form">
-        <div class="form-group">
-            <label for="categoryId">
-                ID: <input class="form-control" type="number" id="categoryId" name="categoryId" readonly value=<c:out value="${category.categoryId}" /> />
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="title">
-                Title:<input class="form-control" type="text" id="title" name="title" value="<c:out value="${category.title}" />" />
-            </label>
-        </div>
-        <div class="form-group">
-            <label for="description">
-                Description: <input class="form-control" type="text" id="description" name="description" value="<c:out value="${category.description}" />" />
-            </label>
-        </div>
-        <input type="submit" value="Submit" class="btn btn-outline-success" />
-    </form>
+    <h1>Opps... Error...</h1>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: filkyr
-  Date: 30.10.2018
-  Time: 20:59
+  Date: 01.11.2018
+  Time: 15:55
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,54 +16,67 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <title>Categories</title>
+    <title>Customers</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<%@ include file="../templates/header.html"%>
+<%@ include file="../../templates/header.html" %>
+
 <div class="wrap">
     <section>
         <div class="container">
-            <table class="table table-striped">
+            <table class="table table-striped" style="table-layout: fixed">
                 <thead>
                 <tr>
                     <th>
                         ID
                     </th>
                     <th>
-                        Title
+                        First name
                     </th>
                     <th>
-                        Description
+                        Last name
+                    </th>
+                    <th>
+                        Phone num
+                    </th>
+                    <th>
+                        Address
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${categories}" var="category">
+                <c:forEach items="${customers}" var="customer">
                     <tr>
-                        <td>
-                            <c:out value="${category.categoryId}"/>
+                        <td class="overflowHidden">
+                            <c:out value="${customer.id}"/>
                         </td>
-                        <td>
-                            <c:out value="${category.title}"/>
+                        <td class="overflowHidden">
+                            <c:out value="${customer.firstName}"/>
                         </td>
-                        <td>
-                            <c:out value="${category.description}"/>
+                        <td class="overflowHidden">
+                            <c:out value="${customer.lastName}"/>
                         </td>
-                        <td>
-                            <a href="CategoryController?action=edit&categoryId=<c:out value="${category.categoryId}"/>">Update</a>
+                        <td class="overflowHidden">
+                            <c:out value="${customer.phoneNum}"/>
                         </td>
-                        <td>
-                            <a href="CategoryController?action=delete&categoryId=<c:out value="${category.categoryId}"/>">Delete</a>
+                        <td class="overflowHidden">
+                            <c:out value="${customer.address}"/>
+                        </td>
+                        <td td class="overflowHidden">
+                            <a href="CustomerController?action=edit&id=<c:out value="${customer.id}"/>">Update</a>
+                        </td>
+                        <td td class="overflowHidden">
+                            <a href="CustomerController?action=delete&id=<c:out value="${customer.id}"/>">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="CategoryController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="CustomerController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>
@@ -81,3 +94,4 @@
 
 </body>
 </html>
+

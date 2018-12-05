@@ -21,20 +21,14 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Transactional
     @Override
-    public void addProducer(Producer producer) {
-        producerDao.addProducer(producer);
-    }
-
-    @Transactional
-    @Override
     public void removeProducer(int producerId) {
         producerDao.removeProducer(producerId);
     }
 
     @Transactional
     @Override
-    public void updateProducer(Producer producer) {
-        producerDao.updateProducer(producer);
+    public void insertOrUpdateProducer(Producer producer) {
+        producerDao.insertOrUpdateProducer(producer);
     }
 
     @Transactional(readOnly = true)

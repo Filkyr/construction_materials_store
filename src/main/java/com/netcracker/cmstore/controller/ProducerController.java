@@ -4,21 +4,20 @@ import com.netcracker.cmstore.model.Producer;
 import com.netcracker.cmstore.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.validation.Valid;
+import java.util.List;
 
-@RequestMapping(path = "/ProducerController")
+@RequestMapping("/")
 @Controller
 public class ProducerController {
 
-    private static String insert_or_edit = "WEB-INF/Producer.jsp";
-    private static String list_producer = "WEB-INF/ListProducer.jsp";
     private final ProducerService producerService;
 
     @Autowired
@@ -27,53 +26,41 @@ public class ProducerController {
         this.producerService = producerService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("delete".equalsIgnoreCase(action)) { // better to eq start from constant, cuz it prevent you from NPE
-            int producerId = Integer.parseInt(request.getParameter("producerId"));
-
-            producerService.removeProducer(producerId);
-
-            forward = list_producer;
-            request.setAttribute("producers", producerService.getProducers());
-
-        } else if ("edit".equalsIgnoreCase(action)) {
-            forward = insert_or_edit;
-            int producerId = Integer.parseInt(request.getParameter("producerId"));
-            Producer producer = producerService.getProducerById(producerId);
-            request.setAttribute("producer", producer);
-
-        } else if ("listProducer".equalsIgnoreCase(action)) {
-            forward = list_producer;
-            request.setAttribute("producers", producerService.getProducers());
-
-        } else if ("insert".equalsIgnoreCase(action)) {
-
-            forward = insert_or_edit;
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-
+    @GetMapping("/producer/list")
+    public String listProducer(ModelMap model) {
+        List producers = producerService.getProducers();
+        model.addAttribute("producers", producers);
+        return "ListProducer";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/producer/delete/{producerId}")
+    public String deleteProducer(@PathVariable String producerId) {
+        producerService.removeProducer(Integer.valueOf(producerId));
+        return "redirect:/producer/list";
+    }
+
+    @GetMapping("/producer/insert")
+    public String newEmployee(ModelMap model) {
         Producer producer = new Producer();
-        producer.setBrand_name(request.getParameter("brand_name"));
-        producer.setDescription(request.getParameter("description"));
-        producer.setLogo(request.getParameter("logo"));
-        String producerId = request.getParameter("producerId");
-
-        if (producerId == null || producerId.isEmpty()) {
-            producerService.addProducer(producer);
-        } else {
-            producer.setProducerId(Integer.parseInt(producerId));
-            producerService.updateProducer(producer);
-        }
-
-        response.sendRedirect(request.getContextPath() + "/ProducerController?action=listProducer");
+        model.addAttribute("producer", producer);
+        model.addAttribute("edit", false);
+        return "Producer";
     }
 
+    @PostMapping("/producer/updateOrInsert")
+    public String saveEmployee(@Valid Producer producer, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Producer";
+        }
+        producerService.insertOrUpdateProducer(producer);
+        return "redirect:/producer/list";
+    }
+
+    @GetMapping("/producer/edit/{producerId}")
+    public String editEmployee(@PathVariable String producerId, ModelMap model) {
+        Producer producer = producerService.getProducerById(Integer.valueOf(producerId));
+        model.addAttribute("producer", producer);
+        model.addAttribute("edit", true);
+        return "Producer";
+    }
 }

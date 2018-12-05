@@ -21,20 +21,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public void addProduct(Product product) {
-        productDao.addProduct(product);
-    }
-
-    @Transactional
-    @Override
     public void removeProduct(int productId) {
         productDao.removeProduct(productId);
     }
 
     @Transactional
     @Override
-    public void updateProduct(Product product) {
-        productDao.updateProduct(product);
+    public void insertOrUpdateProduct(Product product) {
+        productDao.insertOrUpdateProduct(product);
     }
 
     @Transactional(readOnly = true)
