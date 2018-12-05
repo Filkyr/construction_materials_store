@@ -20,7 +20,16 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <script type="text/javascript">
+        function submitAsPost(url) {
+            var postForm = document.createElement('form');
+            postForm.action = url;
+            postForm.method = 'post';
+            var bodyTag = document.getElementsByTagName('body')[0];
+            bodyTag.appendChild(postForm);
+            postForm.submit();
+        }
+    </script>
 </head>
 <body>
 <%@ include file="../../templates/header.html" %>
@@ -82,17 +91,8 @@
                             <a href="/product/edit/<c:out value="${product.productId}"/>">Update</a>
                         </td>
                         <td td class="overflowHidden">
-                            <script type="text/javascript">
-                                function submitAsPost(url) {
-                                    var postForm = document.createElement('form');
-                                    postForm.action = url;
-                                    postForm.method = 'post';
-                                    var bodyTag = document.getElementsByTagName('body')[0];
-                                    bodyTag.appendChild(postForm);
-                                    postForm.submit();
-                                }
-                            </script>
-                            <a href="${pageContext.request.contextPath}/product/delete/<c:out value="${product.productId}"/>" onclick="submitAsPost(this.href); return false;">Delete</a>
+                            <a href="/product/delete/<c:out value="${product.productId}"/>"
+                               onclick="submitAsPost(this.href); return false;">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

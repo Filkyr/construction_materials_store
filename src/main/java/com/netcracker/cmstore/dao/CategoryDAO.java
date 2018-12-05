@@ -5,11 +5,10 @@ import com.netcracker.cmstore.model.Category;
 import java.util.List;
 
 public interface CategoryDAO {
-    void addCategory(Category category);
 
     void removeCategory(int categoryId);
 
-    void updateCategory(Category category);
+    void updateOrInsertCategory(Category category);
 
     List<Category> getCategories();
 

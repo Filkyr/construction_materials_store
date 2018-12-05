@@ -19,12 +19,6 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public void addCategory(Category category) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.persist(category);
-    }
-
-    @Override
     public void removeCategory(int categoryId) {
         Session session = this.sessionFactory.getCurrentSession();
         Category p = session.load(Category.class, categoryId);
@@ -34,9 +28,9 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public void updateCategory(Category category) {
+    public void updateOrInsertCategory(Category category) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.update(category);
+        session.saveOrUpdate(category);
     }
 
     @SuppressWarnings("unchecked")

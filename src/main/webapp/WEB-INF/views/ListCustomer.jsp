@@ -20,7 +20,16 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <script type="text/javascript">
+        function submitAsPost(url) {
+            var postForm = document.createElement('form');
+            postForm.action = url;
+            postForm.method = 'post';
+            var bodyTag = document.getElementsByTagName('body')[0];
+            bodyTag.appendChild(postForm);
+            postForm.submit();
+        }
+    </script>
 </head>
 <body>
 <%@ include file="../../templates/header.html" %>
@@ -67,16 +76,16 @@
                             <c:out value="${customer.address}"/>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="CustomerController?action=edit&id=<c:out value="${customer.id}"/>">Update</a>
+                            <a href="/customer/edit/<c:out value="${customer.id}"/>">Update</a>
                         </td>
                         <td td class="overflowHidden">
-                            <a href="CustomerController?action=delete&id=<c:out value="${customer.id}"/>">Delete</a>
+                            <a href="${pageContext.request.contextPath}/customer/delete/<c:out value="${customer.id}"/>" onclick="submitAsPost(this.href); return false;">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="CustomerController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="/customer/insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>

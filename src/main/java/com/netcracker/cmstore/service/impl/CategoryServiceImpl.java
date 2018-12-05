@@ -21,20 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public void addCategory(Category category) {
-        categoryDao.addCategory(category);
-    }
-
-    @Transactional
-    @Override
     public void removeCategory(int categoryId) {
         categoryDao.removeCategory(categoryId);
-    }
-
-    @Transactional
-    @Override
-    public void updateCategory(Category category) {
-        categoryDao.updateCategory(category);
     }
 
     @Transactional(readOnly = true)
@@ -47,5 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(int categoryId) {
         return categoryDao.getCategoryById(categoryId);
+    }
+
+    @Transactional
+    @Override
+    public void insertOrUpdateCategory(Category category) {
+        categoryDao.updateOrInsertCategory(category);
     }
 }

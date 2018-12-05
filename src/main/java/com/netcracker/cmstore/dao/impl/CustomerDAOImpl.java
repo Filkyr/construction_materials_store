@@ -20,12 +20,6 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void addCustomer(Customer customer) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.persist(customer);
-    }
-
-    @Override
     public void removeCustomer(int customerId) {
         Session session = this.sessionFactory.getCurrentSession();
         Customer p = session.load(Customer.class, customerId);
@@ -35,9 +29,9 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
+    public void insertOrUpdateCustomer(Customer customer) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.update(customer);
+        session.saveOrUpdate(customer);
     }
 
     @SuppressWarnings("unchecked")

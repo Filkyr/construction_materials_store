@@ -21,7 +21,7 @@
 <%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='CustomerController' name="frmAddCustomer" role="form">
+    <form method="POST" action='/customer/updateOrInsert' name="frmAddCustomer" role="form">
         <div class="form-group">
             <label for="id">
                 ID: <input class="form-control" type="number" id="id" name="id" readonly value=<c:out value="${customer.id}" /> />

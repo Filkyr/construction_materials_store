@@ -4,79 +4,64 @@ import com.netcracker.cmstore.model.Category;
 import com.netcracker.cmstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.validation.Valid;
+import java.util.List;
 
-@RequestMapping(path = "/CategoryController")
+@RequestMapping("/")
 @Controller
 public class CategoryController {
 
-    private static String insert_or_edit = "WEB-INF/Category.jsp";
-    private static String list_category = "WEB-INF/ListCategory.jsp";
-
-    private final CategoryService categoryServiceimpl;
+    private final CategoryService categoryService;
 
     @Autowired
     public CategoryController(CategoryService categoryService) {
         super();
-        this.categoryServiceimpl = categoryService;
+        this.categoryService = categoryService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("delete".equalsIgnoreCase(action)) {
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-
-            categoryServiceimpl.removeCategory(categoryId);
-
-            forward = list_category;
-
-            request.setAttribute("categories", categoryServiceimpl.getCategories());
-
-        } else if ("edit".equalsIgnoreCase(action)) {
-            forward = insert_or_edit;
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-
-            Category category = categoryServiceimpl.getCategoryById(categoryId);
-
-            request.setAttribute("category", category);
-
-        } else if ("listCategory".equalsIgnoreCase(action)) {
-            forward = list_category;
-
-            request.setAttribute("categories", categoryServiceimpl.getCategories());
-        } else if ("insert".equalsIgnoreCase(action)) {
-
-            forward = insert_or_edit;
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-
+    @GetMapping("/category/list")
+    public String listCategory(ModelMap model) {
+        List categories = categoryService.getCategories();
+        model.addAttribute("categories", categories);
+        return "ListCategory";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/category/delete/{categoryId}")
+    public String deleteCategory(@PathVariable String categoryId) {
+        categoryService.removeCategory(Integer.valueOf(categoryId));
+        return "redirect:/category/list";
+    }
+
+    @GetMapping("/category/insert")
+    public String newCategory(ModelMap model) {
         Category category = new Category();
-        category.setTitle(request.getParameter("title"));
-        category.setDescription(request.getParameter("description"));
-        String categoryId = request.getParameter("categoryId");
+        model.addAttribute("category", category);
+        model.addAttribute("edit", false);
+        return "Category";
+    }
 
-        if (categoryId == null || categoryId.isEmpty()) {
-            categoryServiceimpl.addCategory(category);
-        } else {
-            category.setCategoryId(Integer.parseInt(categoryId));
-            categoryServiceimpl.updateCategory(category);
+    @PostMapping("/category/updateOrInsert")
+    public String saveCategory(@Valid Category category, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Category";
         }
+        categoryService.insertOrUpdateCategory(category);
+        return "redirect:/category/list";
+    }
 
-        response.sendRedirect(request.getContextPath() + "/CategoryController?action=listCategory");
+    @GetMapping("/category/edit/{categoryId}")
+    public String editCategory(@PathVariable String categoryId, ModelMap model) {
+        Category category = categoryService.getCategoryById(Integer.valueOf(categoryId));
+        model.addAttribute("category", category);
+        model.addAttribute("edit", true);
+        return "Category";
     }
 
 }

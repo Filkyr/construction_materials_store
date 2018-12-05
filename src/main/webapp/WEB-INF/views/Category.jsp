@@ -20,7 +20,7 @@
 <%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='CategoryController' name="frmAddCategory" role="form">
+    <form method="POST" action='/category/updateOrInsert' name="frmAddCategory" role="form">
         <div class="form-group">
             <label for="categoryId">
                 ID: <input class="form-control" type="number" id="categoryId" name="categoryId" readonly value=<c:out value="${category.categoryId}" /> />

@@ -5,11 +5,9 @@ import com.netcracker.cmstore.model.Customer;
 import java.util.List;
 
 public interface CustomerDAO {
-    void addCustomer(Customer customer);
-
     void removeCustomer(int customerId);
 
-    void updateCustomer(Customer customer);
+    void insertOrUpdateCustomer(Customer customer);
 
     List<Customer> getCustomers();
 

@@ -20,10 +20,19 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+    <script type="text/javascript">
+        function submitAsPost(url) {
+            var postForm = document.createElement('form');
+            postForm.action = url;
+            postForm.method = 'post';
+            var bodyTag = document.getElementsByTagName('body')[0];
+            bodyTag.appendChild(postForm);
+            postForm.submit();
+        }
+    </script>
 </head>
 <body>
-<%@ include file="../../templates/header.html"%>
+<%@ include file="../../templates/header.html" %>
 <div class="wrap">
     <section>
         <div class="container">
@@ -54,16 +63,16 @@
                             <c:out value="${category.description}"/>
                         </td>
                         <td>
-                            <a href="CategoryController?action=edit&categoryId=<c:out value="${category.categoryId}"/>">Update</a>
+                            <a href="/category/edit/<c:out value="${category.categoryId}"/>">Update</a>
                         </td>
                         <td>
-                            <a href="CategoryController?action=delete&categoryId=<c:out value="${category.categoryId}"/>">Delete</a>
+                            <a href="/category/delete/<c:out value="${category.categoryId}"/>" onclick="submitAsPost(this.href); return false;">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="CategoryController?action=insert" class="btn btn-outline-primary" role="button">Add new</a>
+            <a href="/category/insert" class="btn btn-outline-primary" role="button">Add new</a>
 
         </div>
     </section>

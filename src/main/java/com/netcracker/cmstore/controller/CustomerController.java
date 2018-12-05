@@ -4,83 +4,66 @@ import com.netcracker.cmstore.model.Customer;
 import com.netcracker.cmstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
-@RequestMapping(path = "/CustomerController")
+@RequestMapping("/")
 @Controller
 public class CustomerController {
-
-    private static String insert_or_edit = "WEB-INF/Customer.jsp";
-    private static String list_customer = "WEB-INF/ListCustomer.jsp";
-    private final CustomerService customerServiceImpl;
+    
+    private final CustomerService customerService;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
         super();
-        this.customerServiceImpl = customerService;
+        this.customerService = customerService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("delete".equalsIgnoreCase(action)) {
-            int customerId = Integer.parseInt(request.getParameter("id"));
-
-            customerServiceImpl.removeCustomer(customerId);
-
-            forward = list_customer;
-
-            request.setAttribute("customers", customerServiceImpl.getCustomers());
-
-        } else if ("edit".equalsIgnoreCase(action)) {
-            forward = insert_or_edit;
-            int customerId = Integer.parseInt(request.getParameter("id"));
-
-            Customer customer = customerServiceImpl.getCustomerById(customerId);
-
-            request.setAttribute("customer", customer);
-
-        } else if ("listCustomer".equalsIgnoreCase(action)) {
-            forward = list_customer;
-            request.setAttribute("customers", customerServiceImpl.getCustomers());
-
-        } else if ("insert".equalsIgnoreCase(action)) {
-
-            forward = insert_or_edit;
-
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-
+    @GetMapping("/customer/list")
+    public String listCustomer(ModelMap model) {
+        List customers = customerService.getCustomers();
+        model.addAttribute("customers", customers);
+        return "ListCustomer";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/customer/delete/{customerId}")
+    public String deleteCustomer(@PathVariable String customerId) {
+        customerService.removeCustomer(Integer.valueOf(customerId));
+        return "redirect:/customer/list";
+    }
+
+    @GetMapping("/customer/insert")
+    public String newCustomer(ModelMap model) {
         Customer customer = new Customer();
-        customer.setFirstName(request.getParameter("firstName"));
-        customer.setLastName(request.getParameter("lastName"));
-        customer.setPhoneNum(request.getParameter("phoneNum"));
-        customer.setAddress(request.getParameter("address"));
-        String customerId = request.getParameter("id");
-
-        if (customerId == null || customerId.isEmpty()) {
-            customerServiceImpl.addCustomer(customer);
-        } else {
-            customer.setId(Integer.parseInt(customerId));
-            customerServiceImpl.updateCustomer(customer);
-        }
-
-        response.sendRedirect(request.getContextPath() + "/CustomerController?action=listCustomer");
-
+        model.addAttribute("customer", customer);
+        model.addAttribute("edit", false);
+        return "Customer";
     }
 
+    @PostMapping("/customer/updateOrInsert")
+    public String saveCustomer(@Valid Customer customer, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Customer";
+        }
+        customerService.insertOrUpdateCustomer(customer);
+        return "redirect:/customer/list";
+    }
+
+    @GetMapping("/customer/edit/{customerId}")
+    public String editCustomer(@PathVariable String customerId, ModelMap model) {
+        Customer customer = customerService.getCustomerById(Integer.valueOf(customerId));
+        model.addAttribute("customer", customer);
+        model.addAttribute("edit", true);
+        return "Customer";
+    }
 }
 

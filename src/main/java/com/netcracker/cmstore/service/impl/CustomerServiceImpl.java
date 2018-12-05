@@ -21,20 +21,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public void addCustomer(Customer customer) {
-        customerDao.addCustomer(customer);
-    }
-
-    @Transactional
-    @Override
     public void removeCustomer(int customerId) {
         customerDao.removeCustomer(customerId);
     }
 
     @Transactional
     @Override
-    public void updateCustomer(Customer customer) {
-        customerDao.updateCustomer(customer);
+    public void insertOrUpdateCustomer(Customer customer) {
+        customerDao.insertOrUpdateCustomer(customer);
     }
 
     @Transactional(readOnly = true)
