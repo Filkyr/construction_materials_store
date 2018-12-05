@@ -21,7 +21,7 @@
 <%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='/producer/updateOrInsert' name="frmAddProducer" role="form">
+    <form method="POST" action='/producer/updateOrInsert' role="form">
         <div class="form-group">
             <label for="producerId">
                 ID: <input class="form-control" type="number" id="producerId" name="producerId" readonly value=<c:out value="${producer.producerId}" /> />

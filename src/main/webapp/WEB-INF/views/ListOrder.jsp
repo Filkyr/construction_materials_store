@@ -20,6 +20,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+    <script type="text/javascript">
+        function submitAsPost(url) {
+            var postForm = document.createElement('form');
+            postForm.action = url;
+            postForm.method = 'post';
+            var bodyTag = document.getElementsByTagName('body')[0];
+            bodyTag.appendChild(postForm);
+            postForm.submit();
+        }
+    </script>
+
 </head>
 <body>
 <%@ include file="../../templates/header.html" %>
@@ -61,8 +72,8 @@
                                 <td class="overflowHidden">
 
                                 </td>
-                                <td class="overflowHidden">
-                                    <a href="OrderController?action=delete&id=<c:out value="${order.id}"/>&productId=<c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>">Delete</a>
+                                <td td class="overflowHidden">
+                                    <a href="${pageContext.request.contextPath}/order-<c:out value="${order.id}"/>/delete/product-<c:forEach items="${order.products}" var="item">${item.getProductId()}</c:forEach>" onclick="submitAsPost(this.href); return false;">Delete</a>
                                 </td>
                             </tr>
                         </c:when>
@@ -82,7 +93,8 @@
                                             ${item.getProductId()}
                                     </td>
                                     <td class="overflowHidden">
-                                        <a href="OrderController?action=delete&id=<c:out value="${order.id}"/>&productId=${item.getProductId()}">Delete</a>
+                                        <a href="/order-<c:out value="${order.id}"/>/delete/product-${item.getProductId()}"
+                                           onclick="submitAsPost(this.href); return false;">Delete</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -92,8 +104,8 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <a href="OrderController?action=insert" class="btn btn-outline-primary" role="button">Add new order</a>
-            <a href="OrderProductController?action=insert" class="btn btn-outline-primary" role="button">Add product to
+            <a href="/order/insert" class="btn btn-outline-primary" role="button">Add new order</a>
+            <a href="/order/product/insert" class="btn btn-outline-primary" role="button">Add product to
                 order</a>
 
         </div>

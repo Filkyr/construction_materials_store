@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/insert")
-    public String newEmployee(ModelMap model) {
+    public String newProduct(ModelMap model) {
         Product product = new Product();
         model.addAttribute("product", product);
         model.addAttribute("edit", false);
@@ -45,7 +45,7 @@ public class ProductController {
     }
 
     @PostMapping("/product/updateOrInsert")
-    public String saveEmployee(@Valid Product product, BindingResult result) {
+    public String saveProduct(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "Product";
         }
@@ -54,7 +54,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/edit/{productId}")
-    public String editEmployee(@PathVariable String productId, ModelMap model) {
+    public String editProduct(@PathVariable String productId, ModelMap model) {
         Product product = productService.getProductById(Integer.valueOf(productId));
         model.addAttribute("product", product);
         model.addAttribute("edit", true);

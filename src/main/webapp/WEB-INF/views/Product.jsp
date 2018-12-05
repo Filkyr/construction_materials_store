@@ -21,7 +21,7 @@
 <%@ include file="../../templates/header.html" %>
 
 <div class="container">
-    <form method="POST" action="/product/updateOrInsert" modelAttribute="product">
+    <form method="POST" action="/product/updateOrInsert">
         <div class="form-group">
             <label for="productId">
                 ID: <input class="form-control" type="number" id="productId" name="productId" readonly value=<c:out value="${product.productId}" /> />

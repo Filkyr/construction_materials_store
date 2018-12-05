@@ -25,28 +25,28 @@ public class OrderProductController {
         this.orderService = orderService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("insert".equalsIgnoreCase(action)) {
-            forward = insert;
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        if (!(request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty())) {
-
-            orderService.addOrderProduct(Integer.valueOf(request.getParameter("orderId")), Integer.valueOf(request.getParameter("productId")));
-        }
-
-        response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");
-
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String forward = "";
+//        String action = request.getParameter("action");
+//        if ("insert".equalsIgnoreCase(action)) {
+//            forward = insert;
+//        }
+//        RequestDispatcher view = request.getRequestDispatcher(forward);
+//        view.forward(request, response);
+//    }
+//
+//    @RequestMapping(method = RequestMethod.POST)
+//    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//
+//        if (!(request.getParameter("orderId") == null || request.getParameter("orderId").isEmpty())) {
+//
+//            orderService.addOrderProduct(Integer.valueOf(request.getParameter("orderId")), Integer.valueOf(request.getParameter("productId")));
+//        }
+//
+//        response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");
+//
+//    }
 }
 
 

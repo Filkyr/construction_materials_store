@@ -40,7 +40,7 @@ public class ProducerController {
     }
 
     @GetMapping("/producer/insert")
-    public String newEmployee(ModelMap model) {
+    public String newProducer(ModelMap model) {
         Producer producer = new Producer();
         model.addAttribute("producer", producer);
         model.addAttribute("edit", false);
@@ -48,7 +48,7 @@ public class ProducerController {
     }
 
     @PostMapping("/producer/updateOrInsert")
-    public String saveEmployee(@Valid Producer producer, BindingResult result) {
+    public String saveProducer(@Valid Producer producer, BindingResult result) {
         if (result.hasErrors()) {
             return "Producer";
         }
@@ -57,7 +57,7 @@ public class ProducerController {
     }
 
     @GetMapping("/producer/edit/{producerId}")
-    public String editEmployee(@PathVariable String producerId, ModelMap model) {
+    public String editProducer(@PathVariable String producerId, ModelMap model) {
         Producer producer = producerService.getProducerById(Integer.valueOf(producerId));
         model.addAttribute("producer", producer);
         model.addAttribute("edit", true);

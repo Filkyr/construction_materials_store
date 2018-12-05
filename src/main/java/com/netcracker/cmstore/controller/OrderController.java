@@ -4,23 +4,19 @@ import com.netcracker.cmstore.model.Order;
 import com.netcracker.cmstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
-@RequestMapping(path = "/OrderController")
+@RequestMapping("/")
 @Controller
 public class OrderController {
 
-    private static String insert = "WEB-INF/Order.jsp";
-    private static String list_order = "WEB-INF/ListOrder.jsp";
     private final OrderService orderService;
-    private final static String ERROR_MESSAGE = "NumberFormatException in 'OrderController' while processing orderId or productId";
 
     @Autowired
     public OrderController(OrderService orderService) {
@@ -28,58 +24,69 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward = "";
-        String action = request.getParameter("action");
-        if ("delete".equalsIgnoreCase(action)) {
-
-            String orderIdString = request.getParameter("id").replaceAll("\\s+", "");
-            String productIdString = request.getParameter("productId").replaceAll("\\s+", "");
-
-            int orderId = 0;
-            int productId = 0;
-
-            try {
-                orderId = Integer.parseInt(orderIdString);
-                productId = Integer.parseInt(productIdString);
-            } catch (NumberFormatException e) {
-                System.out.println(ERROR_MESSAGE);
-            }
-
-            if (productId > 0) {
-                orderService.removeOrderProduct(orderId, productId);
-            } else {
-                orderService.removeOrder(orderId);
-            }
-
-            forward = list_order;
-
-            request.setAttribute("orders", orderService.getOrders());
-
-        } else if ("listOrder".equalsIgnoreCase(action)) {
-            forward = list_order;
-            request.setAttribute("orders", orderService.getOrders());
-
-        } else if ("insert".equalsIgnoreCase(action)) {
-            forward = insert;
-        }
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
-
+    @GetMapping("/order/list")
+    public String listOrder(ModelMap model) {
+        List orders = orderService.getOrders();
+        model.addAttribute("orders", orders);
+        return "ListOrder";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/order-{orderId}/delete/product-{productId}")
+    public String deleteOrder(@PathVariable String orderId, @PathVariable String productId) {
+
+        int oId = 0;
+        int pId = 0;
+
+        try {
+            oId = Integer.valueOf(orderId);
+            pId = Integer.valueOf(productId);
+        } catch (NumberFormatException e) {
+            System.err.println("NumberFormatException");
+        }
+
+        if (pId > 0) {
+            System.out.println("pId:" + pId);
+            orderService.removeOrderProduct(oId, pId);
+        } else {
+            System.out.println("oId:" + oId);
+            orderService.removeOrder(oId);
+        }
+        return "redirect:/order/list";
+    }
+
+    @GetMapping("/order/insert")
+    public String newOrder(ModelMap model) {
         Order order = new Order();
+        model.addAttribute("order", order);
+        model.addAttribute("edit", false);
+        return "Order";
+    }
 
-        order.setCustomerId(Integer.valueOf(request.getParameter("customerId")));
-        order.setDate(request.getParameter("date"));
-
+    @PostMapping("/order/insert")
+    public String saveOrder(@Valid Order order, BindingResult result) {
+        System.out.println(result);
+        if (result.hasErrors()) {
+            return "Order";
+        }
         orderService.addOrder(order);
+        return "redirect:/order/list";
+    }
 
-        response.sendRedirect(request.getContextPath() + "/OrderController?action=listOrder");
+    @GetMapping("/order/product/insert")
+    public String newOrderProduct(ModelMap model) {
+        Order order = new Order();
+        model.addAttribute("order", order);
+        model.addAttribute("edit", false);
+        return "OrderProduct";
+    }
 
+    @PostMapping("/order/product/insert")
+    public String saveOrderProduct(@RequestParam Map<String,Object> body) {
+        int oId = Integer.valueOf(String.valueOf(body.get("orderId")));
+        int pId = Integer.valueOf(String.valueOf(body.get("productId")));
+
+        orderService.addOrderProduct(oId, pId);
+        return "redirect:/order/list";
     }
 }
 

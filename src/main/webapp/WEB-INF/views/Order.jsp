@@ -22,11 +22,10 @@
 <%@ include file="../../templates/header.html" %>
 
 <div class="container">
-    <form method="POST" action='OrderController' name="frmAddOrder" role="form">
+    <form method="POST" action='/order/insert' role="form">
             <div class="form-group">
-                <label for="id">
-                    ID: <input class="form-control" type="number" id="id" name="id" readonly value=
-                <c:out value="${order.id}"/>/>
+                <label for="orderId">
+                    ID: <input class="form-control" type="number" id="orderId" name="orderId" readonly value=<c:out value="${order.id}" /> />
                 </label>
             </div>
             <div class="form-group">

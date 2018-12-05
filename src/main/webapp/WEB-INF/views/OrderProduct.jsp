@@ -21,7 +21,7 @@
 <%@ include file="../../templates/header.html"%>
 
 <div class="container">
-    <form method="POST" action='OrderProductController' name="frmAddOrderProduct" role="form">
+    <form method="POST" action='/order/product/insert' role="form">
         <div class="form-group">
             <label for="orderId">
                Order ID: <input class="form-control" type="number" id="orderId" name="orderId" value=<c:out value="${orderProduct.orderId}" /> />

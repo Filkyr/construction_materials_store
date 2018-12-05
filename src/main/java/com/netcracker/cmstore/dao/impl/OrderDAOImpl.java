@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class OrderDAOImpl implements OrderDAO {
     private final SessionFactory sessionFactory;
-    
+
     @Autowired
     public OrderDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -23,7 +23,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public void addOrder(Order order) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.persist(order);
+        session.saveOrUpdate(order);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public void removeOrder(int orderId) {
         Session session = this.sessionFactory.getCurrentSession();
-        Order p = session.load(Order.class, orderId);
+        Order p = session.get(Order.class, orderId);
         if (null != p) {
             session.delete(p);
         }
